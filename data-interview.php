@@ -1,3 +1,7 @@
+<?php 
+require_once("koneksi.php");
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -29,7 +33,7 @@
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <span class="mr-2 d-none d-lg-inline text-gray-600 small">Leonardus</span>
+                        <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $_SESSION['nama']?></span>
                         <i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="login.php">Logout</a></li>
@@ -95,56 +99,60 @@
                                 <!-- Modal body -->
                                 <div class="modal-body">
                                 <div class="container mt-3">
-                                    <form action="/action_page.php">
-                                    <div class="row">
-                                            <div class="col">
-                                                <label for="nama">Nama</label>
-                                                <input type="text" class="form-control" placeholder="Nama" id="nama" name="nama">
-                                            </div>
-                                            <div class="col">
-                                                <label for="posisi">Posisi</label>
-                                                <input type="text" class="form-control" placeholder="Posisi" id="posisi" name="posisi">
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 mt-3">
-                                        <label for="alamat">Alamat</label>
-                                        <textarea class="form-control" rows="5" id="alamat" name="alamat"></textarea>
-                                        </div>
+                                    <form method='post' action="action_page.php">
                                         <div class="row">
-                                            <div class="col">
-                                                <label for="pendidikan">Pendidikan</label>
-                                                <input type="text" class="form-control" placeholder="Pendidikan Terkahir" id="pendidikan" name="pendidikan">
+                                                <div class="col">
+                                                    <label for="nama">Nama</label>
+                                                    <input type="text" class="form-control" placeholder="Nama" id="nama" name="nama">
+                                                </div>
+                                                <div class="col">
+                                                    <label for="posisi">Posisi</label>
+                                                    <input type="text" class="form-control" placeholder="Posisi" id="posisi" name="posisi">
+                                                </div>
                                             </div>
-                                            <div class="col">
-                                                <label for="usia">Usia</label>
-                                                <input type="text" class="form-control" placeholder="Usia" id="usia" name="usia">
+                                            <div class="mb-3 mt-3">
+                                            <label for="alamat">Alamat</label>
+                                            <textarea class="form-control" rows="5" id="alamat" name="alamat"></textarea>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <label for="pendidikan">Pendidikan</label>
+                                                    <input type="text" class="form-control" placeholder="Pendidikan Terkahir" id="pendidikan" name="pendidikan">
+                                                </div>
+                                                <div class="col">
+                                                    <label for="usia">Usia</label>
+                                                    <input type="text" class="form-control" placeholder="Usia" id="usia" name="usia">
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 mt-3">
+                                            <label for="tlp">Tanggal Interview</label>
+                                            <input type="date" class="form-control" id="tgl" name="tgl-interview">
+                                            </div>
+                                            <div class="mb-3 mt-3">
+                                            <label for="tlp">Nomor Telepon</label>
+                                            <input type="text" class="form-control" id="tlp" placeholder="Nomor Telepon (WA)" name="tlp">
+                                            </div>
+                                            <div class="mb-3 mt-3">
+                                            <label for="pic">PIC</label>
+                                            <input type="text" class="form-control" id="pic" placeholder="PIC" name="pic">
+                                            </div>
+                                            <div class="mb-3 mt-3">
+                                            <label for="catatan">Catatan Kandidat</label>
+                                            <textarea class="form-control" rows="5" id="catatan" name="catatan"></textarea>
+                                            </div>
+                                            <div class="mb-3 mt-3">
+                                            <label for="status">Status</label>
+                                            <input type="text" class="form-control" id="status" placeholder="Status" name="status">
                                             </div>
                                         </div>
-                                        <div class="mb-3 mt-3">
-                                        <label for="tlp">Nomor Telepon</label>
-                                        <input type="text" class="form-control" id="tlp" placeholder="Nomor Telepon (WA)" name="tlp">
-                                        </div>
-                                        <div class="mb-3 mt-3">
-                                        <label for="pic">PIC</label>
-                                        <input type="text" class="form-control" id="pic" placeholder="PIC" name="pic">
-                                        </div>
-                                        <div class="mb-3 mt-3">
-                                        <label for="catatan">Catatan Kandidat</label>
-                                        <<textarea class="form-control" rows="5" id="catatan" name="catatan"></textarea>
-                                        </div>
-                                        <div class="mb-3 mt-3">
-                                        <label for="status">Status</label>
-                                        <input type="text" class="form-control" id="status" placeholder="Status" name="status">
-                                        </div>
-                                    </form>
                                     </div>
-                                </div>
-
-                                <!-- Modal footer -->
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Submit</button>
-                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                                </div>
+                                    
+                                    <!-- Modal footer -->
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary" name='submit-add-interview'>Submit</button>
+                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </form>
 
                                 </div>
                             </div>
@@ -168,54 +176,36 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>Leonardus</td>
-                                            <td>Ahmad Subajri</td>
-                                            <td>Data Analis</td>
-                                            <td>24/05/2024</td>
-                                            <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</td>
-                                            <td>Qualified</td>
-                                            <td>
-                                                <button type="button" class="fas fa-edit" href="">Edit</button>
-                                                <button type="button" class="fas fa-trash" href="">Edit</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Leonardus</td>
-                                            <td>Herman Santoso</td>
-                                            <td>Web Developer</td>
-                                            <td>24/05/2024</td>
-                                            <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</td>
-                                            <td>Qualified</td>
-                                            <td>
-                                                <button type="button" class="fas fa-edit" href="">Edit</button>
-                                                <button type="button" class="fas fa-trash" href="">Edit</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Nita</td>
-                                            <td>Titi Kamal</td>
-                                            <td>Personal Assistant</td>
-                                            <td>28/05/2024</td>
-                                            <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</td>
-                                            <td>Not Qualified</td>
-                                            <td>
-                                                <button type="button" class="fas fa-edit" href="">Edit</button>
-                                                <button type="button" class="fas fa-trash" href="">Edit</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Nita</td>
-                                            <td>Ahmad Bagus</td>
-                                            <td>It Support</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td>Not Qualified</td>
-                                            <td>
-                                                <button type="button" class="fas fa-edit" href="">Edit</button>
-                                                <button type="button" class="fas fa-trash" href="">Edit</button>
-                                            </td>
-                                        </tr>
+                                        <?php 
+                                            $sql = "SELECT * FROM `data-interview`";
+
+                                            $q = mysqli_query($koneksi, $sql);
+
+                                            while ($row = mysqli_fetch_assoc($q)) {
+                                                $id = $row['Id'];
+                                                $namaInterview = $row['nama_interview'];
+                                                $namaPelamar = $row['nama_pelamar'];
+                                                $posisi = $row['posisi'];
+                                                $tglInterview = $row['tgl_interview'];
+                                                $catatan = $row['catatan'];
+                                                $status = $row['status'];
+
+                                                $tglInterview = date("d M Y", strtotime($tglInterview));
+
+                                                echo "<tr>
+                                                    <td>$namaInterview</td>
+                                                    <td>$namaPelamar</td>
+                                                    <td>$posisi</td>
+                                                    <td>$tglInterview</td>
+                                                    <td>$catatan</td>
+                                                    <td>$status</td>
+                                                    <td>
+                                                        <a href='#' data-bs-target='#editModal' data-bs-toggle='modal' data-bs-id='$id' data-bs-pic='$namaInterview' data-bs-nama='$namaPelamar' data-bs-posisi='$posisi' data-bs-catatan='$catatan' data-bs-status='$status'><button type='button' class='fas fa-edit' href=''>Edit</button>
+                                                        <a href='action_page.php?id=$id&del=1&from=di'><button type='button' class='fas fa-trash' href=''>Edit</button></a>
+                                                    </td>        
+                                                </tr>";
+                                            }
+                                        ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -231,6 +221,89 @@
                 </footer>
             </div>
         </div>
+        <div class="modal fade" id="editModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Laporan</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                <div class="container mt-3">
+                    <form method='post' action="action_page.php">
+                        <input type='hidden' id='idData' name='id'>
+                        <div class="row">
+                                <div class="col">
+                                    <label for="nama">Nama</label>
+                                    <input type="text" class="form-control" placeholder="Nama" id="namaEdit" name="nama">
+                                </div>
+                                <div class="col">
+                                    <label for="posisi">Posisi</label>
+                                    <input type="text" class="form-control" placeholder="Posisi" id="posisiEdit" name="posisi">
+                                </div>
+                            </div>
+                            <div class="mb-3 mt-3">
+                            <label for="tlp">Tanggal Interview</label>
+                            <input type="date" class="form-control" id="tgl" name="tgl-interview" required>
+                            </div>
+                            <div class="mb-3 mt-3">
+                            <label for="pic">PIC</label>
+                            <input type="text" class="form-control" id="picEdit" placeholder="PIC" name="pic">
+                            </div>
+                            <div class="mb-3 mt-3">
+                            <label for="catatan">Catatan Kandidat</label>
+                            <textarea class="form-control" rows="5" id="catatanEdit" name="catatan"></textarea>
+                            </div>
+                            <div class="mb-3 mt-3">
+                            <label for="status">Status</label>
+                            <input type="text" class="form-control" id="statusEdit" placeholder="Status" name="status">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" name='submit-edit-interview'>Submit</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>
+
+                </div>
+            </div>
+        </div>
+        <script>
+            const editModal = document.getElementById('editModal');        
+
+            if (editModal) {
+                editModal.addEventListener('show.bs.modal', event => {
+                    var id = document.getElementById('idData');
+                    var nama = document.getElementById('namaEdit');
+                    var posisi = document.getElementById('posisiEdit');
+                    var pic = document.getElementById('picEdit');
+                    var catatan = document.getElementById('catatanEdit');
+                    var status = document.getElementById('statusEdit');
+
+                    const idValue = event.relatedTarget.getAttribute('data-bs-id');
+                    const namaValue = event.relatedTarget.getAttribute('data-bs-nama');
+                    const posisiValue = event.relatedTarget.getAttribute('data-bs-posisi');
+                    const picValue = event.relatedTarget.getAttribute('data-bs-pic');
+                    const catatanValue = event.relatedTarget.getAttribute('data-bs-catatan');
+                    const statusValue = event.relatedTarget.getAttribute('data-bs-status');
+
+                    id.value = idValue;
+                    nama.value = namaValue;
+                    posisi.value = posisiValue;
+                    pic.value = picValue;
+                    catatan.value = catatanValue;
+                    status.value = statusValue;
+
+                });
+            }
+        </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>

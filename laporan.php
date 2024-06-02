@@ -104,7 +104,7 @@ if (empty($_SESSION['username']) && empty($_SESSION['nama'])) {
                                 </div>
                                 <!-- Modal body -->
                         <div class="container mt-3"> 
-                            <form method="POST" action="tambah-laporan.php">
+                            <form method="POST" action="action_page.php">
                                 <div class="modal-body">
                                     <div class="mb-3 mt-3">
                                                 <label class="form-label"> Perusahaan</label>
@@ -127,7 +127,7 @@ if (empty($_SESSION['username']) && empty($_SESSION['nama'])) {
                                         <div class="row">
                                             <div class="col">
                                                 <label class="form-label">Pendidikan</label>
-                                                <input type="text" class="form-control" placeholder="Pendidikan Terkahir" id="pendidikan" name="pendidikan" required>
+                                                <input type="text" class="form-control" placeholder="Pendidikan Terakhir" id="pendidikan" name="pendidikan" required>
                                             </div>
                                             <div class="col">
                                                 <label class="form-label">Usia</label>
@@ -144,7 +144,7 @@ if (empty($_SESSION['username']) && empty($_SESSION['nama'])) {
                                         </div>
                                         <div class="mb-3 mt-3">
                                         <label class="form-label">Catatan Kandidat</label>
-                                        <<textarea class="form-control" rows="5" id="catatan" name="catatan" required></textarea>
+                                        <textarea class="form-control" rows="5" id="catatan" name="catatan" required></textarea>
                                         </div>
                                         <div class="mb-3 mt-3">
                                         <label class="form-label">Status</label>
@@ -154,7 +154,7 @@ if (empty($_SESSION['username']) && empty($_SESSION['nama'])) {
                                 </div>
                                 <!-- Modal footer -->
                                 <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary" name="simpan">Simpan</button>
+                                    <button type="submit" class="btn btn-primary" name="submit-add-laporan">Simpan</button>
                                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                                 </div>
                             </form>
@@ -179,7 +179,7 @@ if (empty($_SESSION['username']) && empty($_SESSION['nama'])) {
                             } else {
                                 echo
                             "<div class='card-body'>
-                            <table id='example' class='table table-striped' style='width:100%' class='table table-striped table-hover'>                               
+                            <table id='example' class='table table-striped' style='width:100%' class='table table-striped table-hover'>
                                         <tr>
                                             <th style='padding: .9rem .5rem' scope='col'>Perusahaan</th>
                                             <th style='padding: .9rem .5rem' scope='col'>Nama</th>
@@ -194,16 +194,16 @@ if (empty($_SESSION['username']) && empty($_SESSION['nama'])) {
                                         </tr>";    
                             while ($row = mysqli_fetch_assoc($result)) {
                                 echo    "<tr>
-                                            <td>" . $row['perusahaan'] . "</td>;
-                                            <td>" . $row['nama_pelamar'] . "</td>;
-                                            <td>" . $row['posisi'] . "</td>;
-                                            <td>" . $row['alamat'] . "</td>;
-                                            <td>" . $row['pendidikan'] . "</td>;
-                                            <td>" . $row['usia'] . "</td>;
-                                            <td>" . $row['nomor_telepon'] . "</td>;
-                                            <td>" . $row['nama_interview'] . "</td>;
-                                            <td>" . $row['catatan'] . "</td>;
-                                            <td>" . $row['hasil'] . "</td>;
+                                            <td>" . $row['perusahaan'] . "</td>
+                                            <td>" . $row['nama_pelamar'] . "</td>
+                                            <td>" . $row['posisi'] . "</td>
+                                            <td>" . $row['alamat'] . "</td>
+                                            <td>" . $row['pendidikan'] . "</td>
+                                            <td>" . $row['usia'] . "</td>
+                                            <td>" . $row['nomor_telepon'] . "</td>
+                                            <td>" . $row['nama_interview'] . "</td>
+                                            <td>" . $row['catatan'] . "</td>
+                                            <td>" . $row['hasil'] . "</td>
                                         </tr>";
                             }
                                 echo "</table>";

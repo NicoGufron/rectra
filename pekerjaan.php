@@ -1,5 +1,5 @@
 <?php
-include "koneksi.php"
+include "koneksi.php";
 
 ?>
 
@@ -102,7 +102,7 @@ include "koneksi.php"
                                 <!-- Modal body -->
                                 <div class="modal-body">
                                 <div class="container mt-3">
-                                    <form action="/action_page.php">
+                                    <form method="post" action='action_page.php'>
                                     <div class="row">
                                             <div class="col">
                                                 <label for="perusahaan">Perusahaan</label>
@@ -117,15 +117,15 @@ include "koneksi.php"
                                                 <label for="desk">Deskripsi</label>
                                                 <textarea class="form-control" rows="5" id="desk" name="desk"></textarea>
                                             </div>
-                                    </form>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <!-- Modal footer -->
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Tambah</button>
-                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                                </div>
+                                    <!-- Modal footer -->
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary" name='submit-add-job'>Tambah</button>
+                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </form>
 
                                 </div>
                             </div>
@@ -151,6 +151,7 @@ include "koneksi.php"
                                             $sql = "SELECT * FROM job";
                                             $q = mysqli_query($koneksi, $sql);
                                             while ($row = mysqli_fetch_assoc($q)) {
+                                                $id = $row['id'];
                                                 $perusahaan = $row['perusahaan'];
                                                 $posisi = $row['posisi'];
                                                 $deskripsi = $row['deskripsi'];
@@ -159,8 +160,8 @@ include "koneksi.php"
                                                     <td>$posisi</td>
                                                     <td>$deskripsi</td>
                                                     <td>
-                                                        <button type='button' class='fas fa-edit' href=''>Edit</button>
-                                                        <button type='button' class='fas fa-trash' href=''>Edit</button>        
+                                                        <a href='#'><button type='button' class='fas fa-edit' data-bs-toggle='modal' data-bs-target='#editModal' data-bs-perusahaan='$perusahaan' data-bs-posisi='$posisi' data-bs-deskripsi='$deskripsi' data-bs-id='$id'>Edit</button></a>
+                                                        <a href='action_page.php?id=$id&del=1&from=pk'><button type='button' class='fas fa-trash'>Edit</button></a>     
                                                     </td>
                                                 </tr>";
                                             }
@@ -180,6 +181,72 @@ include "koneksi.php"
                 </footer>
             </div>
         </div>
+
+        <div class="modal fade" id="editModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title" id='modalEdit'></h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                <div class="container mt-3">
+                    <form method="post" action='action_page.php'>
+                        <input type='hidden' id='idData' name='id'>
+                        <div class="row">
+                            <div class="col">
+                                <label for="perusahaan">Perusahaan</label>
+                                <input type="text" class="form-control" placeholder="Perusahaan" id="perusahaanEdit" name="perusahaan">
+                            </div>
+                            <div class="col">
+                                <label for="posisi">Posisi</label>
+                                <input type="text" class="form-control" placeholder="Posisi" id="posisiEdit" name="posisi">
+                            </div>
+                        </div>
+                            <div class="mb-3 mt-3">
+                                <label for="desk">Deskripsi</label>
+                                <textarea class="form-control" rows="5" id="deskEdit" name="desk"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" name='submit-edit-job'>Tambah</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>
+
+                </div>
+            </div>
+        </div>
+        <script>
+            const editModal = document.getElementById('editModal');
+            if (editModal) {
+                editModal.addEventListener('show.bs.modal', event => {
+                    var modalEdit = document.getElementById('modalEdit');
+                    var idData = document.getElementById('idData');
+                    var perusahaan = document.getElementById('perusahaanEdit');
+                    var posisi = document.getElementById('posisiEdit');
+                    var deskripsi = document.getElementById('deskEdit');
+
+                    const idValue = event.relatedTarget.getAttribute('data-bs-id');
+                    const perusahaanValue = event.relatedTarget.getAttribute('data-bs-perusahaan');
+                    const posisiValue = event.relatedTarget.getAttribute('data-bs-posisi');
+                    const deskripsiValue = event.relatedTarget.getAttribute('data-bs-deskripsi');
+
+                    idData.value = idValue;
+                    modalEdit.innerHTML = "Mengedit " + posisiValue;
+                    perusahaan.value = perusahaanValue;
+                    posisi.value = posisiValue;
+                    deskripsi.value = deskripsiValue;
+                });
+            }
+        </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>

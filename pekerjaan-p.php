@@ -1,6 +1,6 @@
 <?php
-include "koneksi.php"
-
+include "koneksi.php";
+session_start();
 ?>
 
 
@@ -34,7 +34,7 @@ include "koneksi.php"
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <span class="mr-2 d-none d-lg-inline text-gray-600 small">Pelamar1</span>
+                        <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?=$_SESSION['nama'] ?></span>
                         <i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="login.php">Logout</a></li>
@@ -82,15 +82,32 @@ include "koneksi.php"
 
                         <div class="card-container">
                             <div class="row">
-                                <div class="col-2">
-                                    <div class="card">
-                                        <img class="card-img-top" src="assets/img/jobs.jpg" alt="Card image" style="width:100%">
-                                        <div class="card-body">
-                                        <h4 class="card-title">PT. Nusa Mandiri</h4>
-                                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa aliquid quo recusandae repellat accusantium corporis harum expedita dignissimos officia, eos est, et illo dolor in ducimus dolores voluptates aliquam optio!</p>
-                                        <a href="#" class="btn btn-primary">See Profile</a>
-                                    </div>
-                                </div>
+                                <?php
+                                $sql = "SELECT * FROM job";
+                                $q = mysqli_query($koneksi, $sql);
+
+                                while ($row = mysqli_fetch_assoc($q)) {
+                                    $perusahaan = $row['perusahaan'];
+                                    $posisi = $row['posisi'];
+                                    $deskripsi = $row['deskripsi'];
+
+                                    $deskripsi = nl2br($deskripsi);
+
+                                    echo "<div class='col-4'>
+                                    <br>
+                                        <div class='card'>
+                                            <img class='card-img-top' src='assets/img/jobs.jpg' alt='Card image' style='width:100%'>
+                                            <div class='card-body'>
+                                                <h4 class='card-title'>$perusahaan</h4>
+                                                <strong><p class='card-text'>$posisi</p></strong><br>
+                                                <p class='card-text'>$deskripsi</p>
+                                                <a href='#' class='btn btn-primary' data-bs-target='#myModal' data-bs-position='$posisi' data-bs-perusahaan='$perusahaan' data-bs-toggle='modal'>Lamar Sekarang</a>
+                                            </div>
+                                        </div>
+                                    </div>";
+                                }
+
+                                ?>
                             </div>
                         </div>
                         
@@ -104,8 +121,67 @@ include "koneksi.php"
                         </div>
                     </div>
                 </footer>
+
+                <div class="modal fade" id="myModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="modal-title"></h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                        <div class="container mt-3">
+                            <p id='deskripsi-text'></p>
+                            <form method='post' action="action_page.php">
+                                <div class="row">
+                                    <div class="mb-3">
+                                    <label for="nama">Nama</label>
+                                    <input type="text" class="form-control" placeholder="Nama" id="nama" name="nama" value="<?= $_SESSION['nama']?>" required>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <label for="pendidikan">Pendidikan</label>
+                                            <input type="text" class="form-control" placeholder="Pendidikan Terakhir" id="pendidikan" name="pendidikan" required>
+                                        </div>
+                                        <div class="col">
+                                            <label for="usia">Usia</label>
+                                            <input type="text" class="form-control" placeholder="Usia" id="usia" name="usia" required>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 mt-3">
+                                    <label for="tlp">Nomor Telepon</label>
+                                    <input type="text" class="form-control" id="tlp" placeholder="Nomor Telepon (WA)" name="tlp" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Modal footer -->
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary" name='submit-apply-job'>Submit</button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+
+                        </div>
+                    </div>
+                </div>    
             </div>
         </div>
+        <script>
+            const modal = document.getElementById('myModal');
+            if (modal) {
+                modal.addEventListener('show.bs.modal', event => {
+                    const lamarPosisi = document.getElementById('modal-title');
+                    const deskripsiText = document.getElementById('deskripsi-text');
+                    lamarPosisi.innerHTML = "Lamar sebagai " + event.relatedTarget.getAttribute('data-bs-position');
+                    deskripsiText.innerHTML = "Kamu akan melamar di <strong>" + event.relatedTarget.getAttribute('data-bs-perusahaan') + "</sttrong>";
+                })
+            }
+        </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
