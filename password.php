@@ -27,13 +27,13 @@
                                                 <label for="inputEmail">Email address</label>
                                             </div>
                                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                                                <a class="small" href="login.php">Return to login</a>
+                                                <a class="small" href="login.php">Kembali ke halaman sebelumnya</a>
                                                 <a class="btn btn-primary" href="login.php">Reset Password</a>
                                             </div>
                                         </form>
                                     </div>
                                     <div class="card-footer text-center py-3">
-                                        <div class="small"><a href="register.php">Need an account? Sign up!</a></div>
+                                        <div class="small">Belum mempunyai akun? <a href='register.php'>Daftar disini</a></div>
                                     </div>
                                 </div>
                             </div>
