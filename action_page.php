@@ -15,6 +15,7 @@ if (isset($_POST['submit-add-job'])) {
 }
 
 if (isset($_POST['submit-apply-job'])) {
+    $uploadsDirectory = __DIR__ . "/berkas/";
     $nama = $_POST['nama'];
     $pendidikan = $_POST['pendidikan'];
     $usia = $_POST['usia'];
@@ -26,11 +27,38 @@ if (isset($_POST['submit-apply-job'])) {
     $alamat = $_POST['alamat'];
     $tglLahir = $_POST['tgl_lahir'];
 
-    $sql = "INSERT INTO `data-master` (id, nama_pelamar, posisi, perusahaan, alamat, tgl_lahir, pendidikan, usia, nomor_telepon, email_pelamar, berkas, status) VALUES (0, '$nama', '$posisi', '$perusahaan', '$alamat', '', '$pendidikan', '$usia', '$tlp', '$email', '$berkas', 'Not Yet')";
-    $q = mysqli_query($koneksi, $sql);
-    var_dump($sql);
+    var_dump($tglLahir);
 
-    header("Location: pekerjaan-p.php");
+    if (!is_dir($uploadsDirectory)) {
+        mkdir($uploadsDirectory, 0777, true);
+    }
+
+    if (isset($_FILES['berkas']) && $_FILES['berkas']['error'] === UPLOAD_ERR_OK) {
+        $fileTmpPath = $_FILES['berkas']['tmp_name'];
+        $fileName = $_FILES['berkas']['name'];
+        $fileNameCmps = explode(".", $fileName);
+        $fileExtension = strtolower(end($fileNameCmps));
+
+        $removeSpaces = preg_replace('/\s+/', "_", strtolower($nama));
+        $newFileName = $removeSpaces . '.' . $fileExtension;
+        $dest_path = $uploadsDirectory . $newFileName;
+
+        if (move_uploaded_file($fileTmpPath, $dest_path)) {
+            $berkas = $newFileName;
+            $sql = "INSERT INTO `data-master` (id, nama_pelamar, posisi, perusahaan, alamat, tgl_lahir, pendidikan, usia, nomor_telepon, email_pelamar, berkas, status) VALUES (0, '$nama', '$posisi', '$perusahaan', '$alamat', '$tglLahir', '$pendidikan', '$usia', '$tlp', '$email', '$berkas', 'Not Yet')";
+            $q = mysqli_query($koneksi, $sql);
+            if ($q) {
+                header("Location: pekerjaan-p.php");
+            } else {
+                $message = urlencode("Ada kesalahan! Mohon coba lagi!");
+                header("Location: pekerjaan-p.php?message=".$message);
+            }
+        } else {
+            $message= urlencode("Ada kesalahan! Mohon coba lagi!");
+            header("Location: pekerjaan-p.php?message=".$message);
+        }
+    }
+
 }
 
 if (isset($_POST['submit-add-interview'])) {

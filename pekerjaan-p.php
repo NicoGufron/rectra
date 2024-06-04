@@ -75,8 +75,13 @@ session_start();
                     <div class="container-fluid px-4">
                         <h1 class="mt-4">Pekerjaan</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Cari pekerjaan, sesuai keiinganmu!</li>
+                            <li class="breadcrumb-item active">Cari pekerjaan, sesuai keinginanmu!</li>
                         </ol>
+                        <?php 
+                            if(isset($_GET['message'])) {
+                                echo "<p><strong>".$_GET['message']."</strong></p>";
+                            }
+                        ?>
 
                         <!-- Main Dashboard -->
 
@@ -136,7 +141,7 @@ session_start();
                         <div class="modal-body">
                         <div class="container mt-3">
                             <p id='deskripsi-text'></p>
-                            <form method='post' action="action_page.php">
+                            <form method='post' action="action_page.php" enctype="multipart/form-data">
                                 <div class="row">
                                     <div class="mb-3">
                                     <input type='hidden' name='email' value=<?= $_SESSION['email']?>>
@@ -162,8 +167,8 @@ session_start();
                                     <label for="tgl_lahir">Tanggal Lahir</label>
                                     <input type="date" class="form-control" id="tgl_lahir" placeholder="" name="tgl_lahir" required>
                                     <div class="mb-3 mt-3">
-                                    <label for="berkas">Berkas</label>
-                                    <input type="text" class="form-control" id="berkas" placeholder="Berkas" name="berkas" required>
+                                    <label for="berkas" accept=".pdf">Berkas</label>
+                                    <input type="file" class="form-control" id="berkas" placeholder="Berkas" name="berkas" required>
                                     <div class="mb-3 mt-3">
                                     <label for="alamat">Alamat</label>
                                     <textarea type="text" class="form-control" placeholder="Alamat Terakhir" cols="3" rows="4" id="alamat" name="alamat"></textarea>
