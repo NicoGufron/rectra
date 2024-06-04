@@ -139,6 +139,9 @@ session_start();
                             <form method='post' action="action_page.php">
                                 <div class="row">
                                     <div class="mb-3">
+                                    <input type='hidden' name='email' value=<?= $_SESSION['email']?>>
+                                    <input type='hidden' name='posisi' id='posisiInput'>
+                                    <input type='hidden' name='perusahaan' id = 'perusahaanInput'>
                                     <label for="nama">Nama</label>
                                     <input type="text" class="form-control" placeholder="Nama" id="nama" name="nama" value="<?= $_SESSION['nama']?>" required>
                                     </div>
@@ -155,6 +158,15 @@ session_start();
                                     <div class="mb-3 mt-3">
                                     <label for="tlp">Nomor Telepon</label>
                                     <input type="text" class="form-control" id="tlp" placeholder="Nomor Telepon (WA)" name="tlp" required>
+                                    <div class="mb-3 mt-3">
+                                    <label for="tgl_lahir">Tanggal Lahir</label>
+                                    <input type="date" class="form-control" id="tgl_lahir" placeholder="" name="tgl_lahir" required>
+                                    <div class="mb-3 mt-3">
+                                    <label for="berkas">Berkas</label>
+                                    <input type="text" class="form-control" id="berkas" placeholder="Berkas" name="berkas" required>
+                                    <div class="mb-3 mt-3">
+                                    <label for="alamat">Alamat</label>
+                                    <textarea type="text" class="form-control" placeholder="Alamat Terakhir" cols="3" rows="4" id="alamat" name="alamat"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -177,8 +189,13 @@ session_start();
                 modal.addEventListener('show.bs.modal', event => {
                     const lamarPosisi = document.getElementById('modal-title');
                     const deskripsiText = document.getElementById('deskripsi-text');
+                    const posisiInput = document.getElementById('posisiInput');
+                    const perusahaanInput = document.getElementById('perusahaanInput');
+
                     lamarPosisi.innerHTML = "Lamar sebagai " + event.relatedTarget.getAttribute('data-bs-position');
-                    deskripsiText.innerHTML = "Kamu akan melamar di <strong>" + event.relatedTarget.getAttribute('data-bs-perusahaan') + "</sttrong>";
+                    deskripsiText.innerHTML = "Kamu akan melamar di <strong>" + event.relatedTarget.getAttribute('data-bs-perusahaan') + "</strong>";
+                    posisiInput.value = event.relatedTarget.getAttribute('data-bs-position');
+                    perusahaanInput.value = event.relatedTarget.getAttribute('data-bs-perusahaan');
                 })
             }
         </script>

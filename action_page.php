@@ -14,6 +14,25 @@ if (isset($_POST['submit-add-job'])) {
     header("Location: pekerjaan.php");
 }
 
+if (isset($_POST['submit-apply-job'])) {
+    $nama = $_POST['nama'];
+    $pendidikan = $_POST['pendidikan'];
+    $usia = $_POST['usia'];
+    $tlp = $_POST['tlp'];
+    $posisi = $_POST['posisi'];
+    $perusahaan = $_POST['perusahaan'];
+    $email = $_POST['email'];
+    $berkas = $_POST['berkas'];
+    $alamat = $_POST['alamat'];
+    $tglLahir = $_POST['tgl_lahir'];
+
+    $sql = "INSERT INTO `data-master` (id, nama_pelamar, posisi, perusahaan, alamat, tgl_lahir, pendidikan, usia, nomor_telepon, email_pelamar, berkas, status) VALUES (0, '$nama', '$posisi', '$perusahaan', '$alamat', '', '$pendidikan', '$usia', '$tlp', '$email', '$berkas', 'Not Yet')";
+    $q = mysqli_query($koneksi, $sql);
+    var_dump($sql);
+
+    header("Location: pekerjaan-p.php");
+}
+
 if (isset($_POST['submit-add-interview'])) {
     $nama = $_POST['nama'];
     $posisi = $_POST['posisi'];
@@ -24,8 +43,14 @@ if (isset($_POST['submit-add-interview'])) {
     $pic = $_POST['pic'];
     $catatan = $_POST['catatan'];
     $status = $_POST['status'];
+    $tglInterview = $_POST['tgl-interview'];
 
-    $sql = "INSERT INTO `data-interview` (id, nama_interview, nama_pelamar, posisi, tgl_interview,)";
+    $tglInterview = date("Y-m-d", strtotime($tglInterview));
+    
+    $sql = "INSERT INTO `data-interview` (id, nama_interview, nama_pelamar, posisi, tgl_interview, catatan, status) VALUES (0, '$pic', '$nama', '$posisi', '$tglInterview', '$catatan', '$status')";
+    var_dump($sql);
+    $q = mysqli_query($koneksi, $sql);
+    header("Location: data-interview.php");
 }
 
 if (isset($_POST['submit-add-master'])) {
