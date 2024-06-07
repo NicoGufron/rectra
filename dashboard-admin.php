@@ -8,6 +8,21 @@ if (empty($_SESSION['username']) && empty($_SESSION['nama'])) {
     exit();
 }
 
+$sqlDataMaster = "SELECT id FROM `data-master`";
+$sqlDataInterview = "SELECT id FROM `data-interview`";
+$sqlDataPekerjaan = "SELECT id FROM job";
+$sqlDataLaporan = "SELECT id FROM laporan";
+
+$qDm = mysqli_query($koneksi, $sqlDataMaster);
+$qDi = mysqli_query($koneksi, $sqlDataInterview);
+$qP  = mysqli_query($koneksi, $sqlDataPekerjaan);
+$qL  = mysqli_query($koneksi, $sqlDataLaporan);
+
+$totalDm = mysqli_num_rows($qDm);
+$totalDi = mysqli_num_rows($qDi);
+$totalP  = mysqli_num_rows($qP);
+$totalL  = mysqli_num_rows($qL);
+
 ?>
 
 
@@ -96,7 +111,7 @@ if (empty($_SESSION['username']) && empty($_SESSION['nama'])) {
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-primary text-white mb-4">
                                     <div class="card-body">Data Master
-                                        <div class="mb-0 font-weight-bold text-gray-800">4</div>
+                                        <div class="mb-0 font-weight-bold text-gray-800"><?= $totalDm ?></div>
                                     </div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
                                         <a class="small text-white stretched-link" href="data-master.php">View Details</a>
@@ -107,7 +122,7 @@ if (empty($_SESSION['username']) && empty($_SESSION['nama'])) {
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-warning text-white mb-4">
                                     <div class="card-body">Data Interview
-                                        <div class="mb-0 font-weight-bold text-gray-800">4</div>
+                                        <div class="mb-0 font-weight-bold text-gray-800"><?= $totalDi ?></div>
                                     </div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
                                         <a class="small text-white stretched-link" href="data-interview.php">View Details</a>
@@ -118,7 +133,7 @@ if (empty($_SESSION['username']) && empty($_SESSION['nama'])) {
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-success text-white mb-4">
                                     <div class="card-body">Pekerjaan
-                                        <div class="mb-0 font-weight-bold text-gray-800">2</div>
+                                        <div class="mb-0 font-weight-bold text-gray-800"><?= $totalP ?></div>
                                     </div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
                                         <a class="small text-white stretched-link" href="pekerjaan.php">View Details</a>
@@ -129,7 +144,7 @@ if (empty($_SESSION['username']) && empty($_SESSION['nama'])) {
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-danger text-white mb-4">
                                     <div class="card-body">Laporan
-                                        <div class="mb-0 font-weight-bold text-gray-800">2</div>
+                                        <div class="mb-0 font-weight-bold text-gray-800"><?= $totalL?></div>
                                     </div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
                                         <a class="small text-white stretched-link" href="Laporan">View Details</a>

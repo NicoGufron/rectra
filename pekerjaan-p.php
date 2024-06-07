@@ -92,6 +92,7 @@ session_start();
                                 $q = mysqli_query($koneksi, $sql);
 
                                 while ($row = mysqli_fetch_assoc($q)) {
+                                    $id = $row['id'];
                                     $perusahaan = $row['perusahaan'];
                                     $posisi = $row['posisi'];
                                     $deskripsi = $row['deskripsi'];
@@ -106,7 +107,7 @@ session_start();
                                                 <h4 class='card-title'>$perusahaan</h4>
                                                 <strong><p class='card-text'>$posisi</p></strong><br>
                                                 <p class='card-text'>$deskripsi</p>
-                                                <a href='#' class='btn btn-primary' data-bs-target='#myModal' data-bs-position='$posisi' data-bs-perusahaan='$perusahaan' data-bs-toggle='modal'>Lamar Sekarang</a>
+                                                <a href='#' class='btn btn-primary' data-bs-target='#myModal' data-bs-position='$posisi' data-bs-perusahaan='$perusahaan' data-bs-id='$id' data-bs-toggle='modal'>Lamar Sekarang</a>
                                             </div>
                                         </div>
                                     </div>";
@@ -144,6 +145,8 @@ session_start();
                             <form method='post' action="action_page.php" enctype="multipart/form-data">
                                 <div class="row">
                                     <div class="mb-3">
+                                    <input type='hidden' name='id_akun' value=<?= $_SESSION['id'] ?>>
+                                    <input type='hidden' name='id_job' id='id_job'>
                                     <input type='hidden' name='email' value=<?= $_SESSION['email']?>>
                                     <input type='hidden' name='posisi' id='posisiInput'>
                                     <input type='hidden' name='perusahaan' id = 'perusahaanInput'>
@@ -196,9 +199,11 @@ session_start();
                     const deskripsiText = document.getElementById('deskripsi-text');
                     const posisiInput = document.getElementById('posisiInput');
                     const perusahaanInput = document.getElementById('perusahaanInput');
+                    const idJob = document.getElementById('id_job');
 
                     lamarPosisi.innerHTML = "Lamar sebagai " + event.relatedTarget.getAttribute('data-bs-position');
                     deskripsiText.innerHTML = "Kamu akan melamar di <strong>" + event.relatedTarget.getAttribute('data-bs-perusahaan') + "</strong>";
+                    idJob.value = event.relatedTarget.getAttribute('data-bs-id');
                     posisiInput.value = event.relatedTarget.getAttribute('data-bs-position');
                     perusahaanInput.value = event.relatedTarget.getAttribute('data-bs-perusahaan');
                 })

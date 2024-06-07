@@ -15,6 +15,7 @@ if (empty($_SESSION['username']) && empty($_SESSION['nama'])) {
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
@@ -107,17 +108,42 @@ if (empty($_SESSION['username']) && empty($_SESSION['nama'])) {
                             <form method="POST" action="action_page.php">
                                 <div class="modal-body">
                                     <div class="mb-3 mt-3">
-                                                <label class="form-label"> Perusahaan</label>
-                                                <input type="text" class="form-control" placeholder="Nama" id="perusahaan" name="perusahaan" required>
-                                            </div>
-                                    <div class="row">
+                                        <label class="form-label"> Perusahaan</label>
+                                            <select class="form-control" name="perusahaan" id="perusahaan">
+
+                                                <?php
+                                                $sql = "SELECT DISTINCT perusahaan FROM job";
+                                                $q = mysqli_query($koneksi, $sql);
+
+                                                echo "<option value='' selected readonly hidden>Pilih Perusahaan</option>";
+                                                while ($row = mysqli_fetch_assoc($q)) {
+                                                    $namaPerusahaan = $row['perusahaan'];
+                                                    echo "<option value='$namaPerusahaan'>$namaPerusahaan</option>";
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                        <div class="row">
                                             <div class="col">
                                                 <label class="form-label">Nama</label>
-                                                <input type="text" class="form-control" placeholder="Nama" id="nama" name="nama" required>
+                                                <select class='form-control' name='nama'>
+                                                        <!-- <input type="text" class="form-control" placeholder="Nama" id="nama" name="nama"> -->
+                                                        <?php
+                                                        $sql = "SELECT DISTINCT nama_pelamar from `data-interview`";
+                                                        $q = mysqli_query($koneksi, $sql);
+
+                                                        while ($row = mysqli_fetch_assoc($q)) {
+                                                            $nama = $row['nama_pelamar'];
+                                                            echo "<option value='$nama'>$nama</option>";
+                                                        }
+                                                        ?>
+                                                    </select>
                                             </div>
                                             <div class="col">
-                                                <label class="form-label">Posisi</label>
-                                                <input type="text" class="form-control" placeholder="Posisi" id="posisi" name="posisi" required>
+                                                <label class='form-label' for="posisi">Posisi</label>
+                                                <select class="form-control" name="posisi" id="posisi">
+
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="mb-3 mt-3">
@@ -140,7 +166,21 @@ if (empty($_SESSION['username']) && empty($_SESSION['nama'])) {
                                         </div>
                                         <div class="mb-3 mt-3">
                                         <label class="form-label">PIC</label>
-                                        <input type="text" class="form-control" id="nama_interview" placeholder="PIC" name="nama_interview" required>
+                                        <select class='form-control' name="nama_interview">
+
+                                            <?php 
+                                                $sql = "SELECT * FROM `data-interview`";
+                                                
+                                                $q = mysqli_query($koneksi, $sql);
+                                                while($row = mysqli_fetch_assoc($q)) {
+                                                    $id = $row['Id'];
+                                                    $nama = $row['nama_interview'];
+
+                                                    echo "<option value='$id|$nama'>$nama</option>";
+                                                }
+                                                
+                                                ?>
+                                        </select>
                                         </div>
                                         <div class="mb-3 mt-3">
                                         <label class="form-label">Catatan Kandidat</label>
@@ -201,9 +241,9 @@ if (empty($_SESSION['username']) && empty($_SESSION['nama'])) {
                                             <td>" . $row['pendidikan'] . "</td>
                                             <td>" . $row['usia'] . "</td>
                                             <td>" . $row['nomor_telepon'] . "</td>
-                                            <td>" . $row['nama_interview'] . "</td>
+                                            <td>" . $row['pic'] . "</td>
                                             <td>" . $row['catatan'] . "</td>
-                                            <td>" . $row['hasil'] . "</td>
+                                            <td>" . $row['status'] . "</td>
                                         </tr>";
                             }
                                 echo "</table>";
@@ -221,6 +261,26 @@ if (empty($_SESSION['username']) && empty($_SESSION['nama'])) {
                 </footer>
             </div>
         </div>
+        <script>
+        $(document).ready(function() {
+            $("#perusahaan").change(function() {
+                var namaPerusahaan = $(this).val();
+                $.ajax({
+                    url: "action_page.php",
+                    type: "post",
+                    data: {
+                        perusahaanLaporan: namaPerusahaan
+                    },
+                    success: function(response) {
+                        $('#posisi').html(response);
+                    },
+                    failed: function(response) {
+                        console.log("failed");
+                    }
+                })
+            });
+        });
+        </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
