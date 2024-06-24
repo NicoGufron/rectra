@@ -17,6 +17,8 @@ session_start();
     <title>Rectra Talent Indonesia</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="css/styles.css" rel="stylesheet" />
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
 <body class="sb-nav-fixed">
@@ -36,7 +38,7 @@ session_start();
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $_SESSION['nama'] ?></span>
+                    <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $_SESSION['username'] ?></span>
                     <i class="fas fa-user fa-fw"></i></a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                     <li><a class="dropdown-item" href="logout.php">Logout</a></li>
@@ -57,7 +59,7 @@ session_start();
                         <div class="sb-sidenav-menu-heading">Data</div>
                         <a class="nav-link" href="data-master.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
-                            Data Master
+                            Data Pelamar
                         </a>
                         <a class="nav-link" href="data-interview.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-folder"></i></div>
@@ -70,34 +72,34 @@ session_start();
                         <div class="sb-sidenav-menu-heading"></div>
                         <a class="nav-link" href="laporan.php">
                             <div class="sb-nav-link-icon"><i class="far fa-file-alt"></i></div>
-                            Laporan
+                            Hasil Interview
                         </a>
                     </div>
                 </div>
                 <div class="sb-sidenav-footer">
                     <div class="small">Logged in as:</div>
-                    Administrator
+                    <?= $_SESSION['hak_akses'] ?>
                 </div>
             </nav>
         </div>
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Data Master</h1>
+                    <h1 class="mt-4">Data Pelamar</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item active">Data Pelamar Yang Masuk</li>
                     </ol>
 
                     <!-- Button Edit Data -->
 
-                    <a href="tambah-laporan.php" class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm" data-bs-toggle="modal" data-bs-target="#myModal"><i class="far fa-file-alt fa-sm text-white-50"></i> Tambah Data</a>
+                    <a class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm" data-bs-toggle="modal" data-bs-target="#myModal"><i class="far fa-file-alt fa-sm text-white-50"></i> Tambah Data</a>
                     <div class="modal fade" id="myModal">
                         <div class="modal-dialog">
                             <div class="modal-content">
 
                                 <!-- Modal Header -->
                                 <div class="modal-header">
-                                    <h4 class="modal-title">Tambah Data Master</h4>
+                                    <h4 class="modal-title">Tambah Data Pelamar</h4>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                 </div>
 
@@ -128,13 +130,13 @@ session_start();
                                                     <select class='form-control' name='nama'>
                                                         <!-- <input type="text" class="form-control" placeholder="Nama" id="nama" name="nama"> -->
                                                         <?php
-                                                        $sql = "SELECT Id, nama from akun WHERE hak_akses = 'Pelamar';";
+                                                        $sql = "SELECT Id, username from akun WHERE hak_akses = 'Pelamar';";
                                                         $q = mysqli_query($koneksi, $sql);
 
                                                         while ($row = mysqli_fetch_assoc($q)) {
                                                             $id = $row['Id'];
-                                                            $nama = $row['nama'];
-                                                            echo "<option value='$id|$nama'>$nama</option>";
+                                                            $username = $row['username'];
+                                                            echo "<option value='$id|$username'>$username</option>";
                                                         }
                                                         ?>
                                                     </select>
@@ -218,18 +220,17 @@ session_start();
                                         <th style="text-align:center; font-size: 14px;padding: .9rem .5rem" scope="col">Nomor Telepon</th>
                                         <th style="text-align:center; font-size: 14px;padding: .9rem .5rem" scope="col">Email</th>
                                         <th style="text-align:center; font-size: 14px;padding: .9rem .5rem" scope="col">Berkas</th>
-                                        <th style="text-align:center; font-size: 14px;padding: .9rem .5rem" scope="col">Status</th>
                                         <th style="text-align:center; font-size: 14px;padding: .9rem .5rem" scope="col">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $sql = "SELECT * FROM `data-master`";
+                                    $sql = "SELECT * FROM pelamar";
 
                                     $q = mysqli_query($koneksi, $sql);
 
                                     while ($row = mysqli_fetch_assoc($q)) {
-                                        $id = $row['id'];
+                                        $idPelamar = $row['id_pelamar'];
                                         $namaPelamar = $row['nama_pelamar'];
                                         $posisi = $row['posisi'];
                                         $perusahaan = $row['perusahaan'];
@@ -240,7 +241,7 @@ session_start();
                                         $nomorTelpon = $row['nomor_telepon'];
                                         $emailPelamar = $row['email_pelamar'];
                                         $berkas = $row['berkas'];
-                                        $status = $row['status'];
+                                        // $status = $row['status'];
 
                                         $tglLahir = date("d M Y", strtotime($tglLahir));
 
@@ -257,9 +258,8 @@ session_start();
                                                 <td style='text-align:center; font-size: 14px;'>
                                                     <a class='text-primary'>$berkas</a>
                                                 </td>
-                                                <td style='text-align:center; font-size: 14px;'>$status</td>
                                                 <td>
-                                                    <a href='#'><button type='button' class='fas fa-edit' data-bs-toggle='modal' data-bs-target='#editModal' data-bs-id='$id' data-bs-nama='$namaPelamar' data-bs-posisi='$posisi' data-bs-perusahaan='$perusahaan' data-bs-pendidikan='$pendidikan' data-bs-email='$emailPelamar' data-bs-usia='$usia' data-bs-nomortelpon='$nomorTelpon' data-bs-alamat='$alamat' data-bs-status='$status'>Edit</button></a>
+                                                    <a href='#'><button type='button' class='fas fa-edit' data-bs-toggle='modal' data-bs-target='#editModal' data-bs-id='$id' data-bs-nama='$namaPelamar' data-bs-posisi='$posisi' data-bs-perusahaan='$perusahaan' data-bs-pendidikan='$pendidikan' data-bs-email='$emailPelamar' data-bs-usia='$usia' data-bs-nomortelpon='$nomorTelpon' data-bs-alamat='$alamat'>Edit</button></a>
                                                     <a href='action_page.php?id=$id&del=1&from=dm'><button type='button' class='fas fa-trash'>Delete</button></a>
                                                 </td>
                                             </tr>";
@@ -319,14 +319,14 @@ session_start();
                                     <select class='form-control' name='nama' id='namaEdit'>
                                         <!-- <input type="text" class="form-control" placeholder="Nama" id="nama" name="nama"> -->
                                         <?php
-                                        $sql = "SELECT Id, nama from akun WHERE hak_akses = 'Pelamar';";
+                                        $sql = "SELECT Id, username from akun WHERE hak_akses = 'Pelamar';";
                                         $q = mysqli_query($koneksi, $sql);
 
                                         echo "<option value='' selected readonly hidden></option>";
                                         while ($row = mysqli_fetch_assoc($q)) {
                                             $id = $row['Id'];
-                                            $nama = $row['nama'];
-                                            echo "<option value='$id|$nama'>$nama</option>";
+                                            $username = $row['username'];
+                                            echo "<option value='$id|$username'>$username</option>";
                                         }
                                         ?>
                                     </select>
@@ -401,6 +401,9 @@ session_start();
                     },
                     success: function(response) {
                         $('#posisi').html(response);
+                        if (posisi)  {
+                            $('posisi').val((posisi));
+                        }
                     },
                     failed: function(response) {
                         console.log("failed");

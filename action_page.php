@@ -28,6 +28,7 @@ if (isset($_POST['submit-apply-job'])) {
     $tglLahir = $_POST['tgl_lahir'];
     $idJob = $_POST['id_job'];
     $idAkun = $_POST['id_akun'];
+    $username = $_POST['username'];
 
     if (!is_dir($uploadsDirectory)) {
         mkdir($uploadsDirectory, 0777, true);
@@ -45,7 +46,7 @@ if (isset($_POST['submit-apply-job'])) {
 
         if (move_uploaded_file($fileTmpPath, $dest_path)) {
             $berkas = $newFileName;
-            $sql = "INSERT INTO `data-master` (id, id_akun, id_job, nama_pelamar, posisi, perusahaan, alamat, tgl_lahir, pendidikan, usia, nomor_telepon, email_pelamar, berkas, status) VALUES (0, '$idAkun', '$idJob', '$nama', '$posisi', '$perusahaan', '$alamat', '$tglLahir', '$pendidikan', '$usia', '$tlp', '$email', '$berkas', 'Not Yet')";
+            $sql = "INSERT INTO pelamar (id_pelamar, username, id_akun, nama_pelamar, email_pelamar, tgl_lahir, alamat, pendidikan, nomor_telepon, usia, id_job, posisi, perusahaan, berkas) VALUES (0, '$username', '$idAkun', '$nama', '$email', '$tglLahir', '$alamat', '$pendidikan', '$tlp', '$usia', '$idJob', '$posisi', '$perusahaan', '$berkas')";
             $q = mysqli_query($koneksi, $sql);
             if ($q) {
                 header("Location: pekerjaan-p.php");
@@ -63,17 +64,18 @@ if (isset($_POST['submit-apply-job'])) {
 
 if (isset($_POST['submit-add-interview'])) {
     $nama = $_POST['nama'];
-    $posisi = $_POST['posisi'];
     $pic = $_POST['pic'];
-    $catatan = $_POST['catatan'];
+    $emailPic = $_POST['emailpic'];
+$catatan = $_POST['catatan'];
+    $posisi = $_POST['posisi'];
     $tglInterview = $_POST['tgl-interview'];
 
-    list($id_akun, $nama) = explode("|", $nama);
-    list($posisi, $perusahaan) = explode("|", $posisi );
+    list($id_pelamar, $nama) = explode("|", $nama);
+    list($posisi, $perusahaan) = explode("|", $posisi);
 
     $tglInterview = date("Y-m-d", strtotime($tglInterview));
     
-    $sql = "INSERT INTO `data-interview` (Id, id_akun, nama_pelamar, nama_interview, posisi, perusahaan, tgl_interview, catatan) VALUES (NULL, '$id_akun', '$nama','$pic', '$posisi', '$perusahaan', '$tglInterview', '$catatan')";
+    $sql = "INSERT INTO interview (id_interview, id_pelamar, nama_interviewer, email_interviewer, nama_pelamar, posisi, perusahaan, tgl_interview, catatan, status) VALUES (NULL, '$id_pelamar', '$pic','$emailPic', '$nama', '$posisi', '$perusahaan', '$tglInterview', '$catatan', 'Not Yet')";
     $q = mysqli_query($koneksi, $sql);
     header("Location: data-interview.php");
 }
@@ -113,7 +115,8 @@ if (isset($_POST['submit-add-master'])) {
 
         if (move_uploaded_file($fileTmpPath, $dest_path)) {
             $berkas = $newFileName;
-            $sql = "INSERT INTO `data-master` (id, id_job, id_akun, nama_pelamar, posisi, perusahaan, alamat, tgl_lahir, pendidikan, usia, nomor_telepon, email_pelamar, berkas, status) VALUES (0, '$id_job', '$id_akun', '$nama', '$posisi', '$perusahaan', '$alamat', '$tglLahir', '$pendidikan', '$usia', '$nomorTelepon', '$email', '$berkas', 'Not Yet')";
+            $sql = "INSERT INTO pelamar (id_pelamar, username, id_akun, nama_pelamar, email_pelamar, tgl_lahir, alamat, pendidikan, nomor_telepon, usia, id_job, posisi, perusahaan, berkas) VALUES (NULL, '$nama', '$id_akun', '$nama', '$email', '$tglLahir', '$alamat', '$pendidikan', '$nomorTelepon', '$usia', '$id_job', '$posisi', '$perusahaan', '$berkas')";
+            var_dump($sql);
             $q = mysqli_query($koneksi, $sql);
             header('location: data-master.php');
         }
@@ -122,11 +125,6 @@ if (isset($_POST['submit-add-master'])) {
     }
 
     header('location: data-master.php');
-
-
-    // $sql = "INSERT INTO `data-master` (id, nama_pelamar, posisi, perusahaan, alamat, tgl_lahir, pendidikan, usia, nomor_telepon, email_pelamar, berkas, status) VALUES (0, '$nama', '$posisi', '$perusahaan', '$alamat', '$tglLahir', '$pendidikan', '$usia', '$nomorTelepon', '$email', '$berkas', '$status')";
-    // $q = mysqli_query($koneksi, $sql);
-
 }
 
 if (isset($_POST['submit-add-laporan'])) {
@@ -191,13 +189,13 @@ if (isset($_POST['submit-edit-master'])) {
 
         if (move_uploaded_file($fileTmpPath, $dest_path)) {
             $berkas = $newFileName;
-            $sql = "UPDATE `data-master` SET id_job = '$id_job', id_akun = '$id_akun', nama_pelamar = '$nama', posisi = '$posisi', perusahaan = '$perusahaan', alamat = '$alamat', tgl_lahir = '$tglLahir', pendidikan = '$pendidikan', usia = '$usia', nomor_telepon='$nomorTelepon', email_pelamar = '$email', berkas = '$berkas', status='$status' WHERE id = '$id'";
+            $sql = "UPDATE pelamar SET id_job = '$id_job', id_akun = '$id_akun', nama_pelamar = '$nama', posisi = '$posisi', perusahaan = '$perusahaan', alamat = '$alamat', tgl_lahir = '$tglLahir', pendidikan = '$pendidikan', usia = '$usia', nomor_telepon='$nomorTelepon', email_pelamar = '$email', berkas = '$berkas', status='$status' WHERE id = '$id'";
             // var_dump($sql);
             $q = mysqli_query($koneksi, $sql);
             header('location: data-master.php');
         }
     } else {
-        $sql = "UPDATE `data-master` SET id_job = '$id_job', id_akun = '$id_akun', nama_pelamar = '$nama', posisi = '$posisi', perusahaan = '$perusahaan', alamat = '$alamat', tgl_lahir = '$tglLahir', pendidikan = '$pendidikan', usia = '$usia', nomor_telepon='$nomorTelepon', email_pelamar = '$email', status='$status' WHERE id = '$id'";
+        $sql = "UPDATE pelamar SET id_job = '$id_job', id_akun = '$id_akun', nama_pelamar = '$nama', posisi = '$posisi', perusahaan = '$perusahaan', alamat = '$alamat', tgl_lahir = '$tglLahir', pendidikan = '$pendidikan', usia = '$usia', nomor_telepon='$nomorTelepon', email_pelamar = '$email', status='$status' WHERE id = '$id'";
         var_dump($sql);
         $q = mysqli_query($koneksi, $sql);
         header('location: data-master.php');
@@ -219,14 +217,16 @@ if (isset($_POST['submit-edit-job'])) {
 
 if (isset($_POST['submit-edit-interview'])) {
     $id = $_POST['id'];
-    $idAkun = $_POST['idAkun']; // FOREIGN KEY
+    $idAkun = $_POST['id_pelamar'];
     $nama = $_POST['nama'];
     $posisi = $_POST['posisi'];
     $pic = $_POST['pic'];
+    $emailInterviewer = $_POST['emailpic'];
     $catatan = $_POST['catatan'];
+    $status = $_POST['status'];
     $tglInterview = $_POST['tgl-interview'];
 
-    $sql = "UPDATE `data-interview` SET nama_interview = '$pic', tgl_interview = '$tglInterview', catatan = '$catatan' WHERE id = $id";
+    $sql = "UPDATE interview SET nama_interviewer = '$pic', email_interviewer = '$emailInterviewer', tgl_interview = '$tglInterview', catatan = '$catatan', status = '$status' WHERE id_interview = $id";
     // var_dump($sql);
     $q = mysqli_query($koneksi, $sql);
 
@@ -236,14 +236,14 @@ if (isset($_POST['submit-edit-interview'])) {
 // delete semua disini
 
 if ($_GET['id'] != "" && $_GET['del'] === '1' && $_GET['from'] === "dm") {
-    $sql = "DELETE FROM `data-master` WHERE id = $_GET[id]";
+    $sql = "DELETE FROM pelamar WHERE id_pelamar = $_GET[id]";
 
     $q = mysqli_query($koneksi, $sql);
     header("Location: data-master.php");
 }
 
 if ($_GET['id'] != "" && $_GET['del'] === '1' && $_GET['from'] === "di") {
-    $sql = "DELETE FROM `data-interview` WHERE id = $_GET[id]";
+    $sql = "DELETE FROM interview WHERE id_interview = $_GET[id]";
 
     $q = mysqli_query($koneksi, $sql);
     header("Location: data-interview.php");
@@ -261,6 +261,7 @@ if ($_GET['id'] != "" && $_GET['del'] === '1' && $_GET['from'] === "pk") {
 if (isset($_POST['perusahaan'])) {
     $namaPerusahaan = $_POST['perusahaan'];
     $sql = "SELECT DISTINCT id, posisi FROM job WHERE perusahaan = '$namaPerusahaan'";
+    
     $q = mysqli_query($koneksi, $sql);
 
     if (mysqli_num_rows(($q)) > 0) {

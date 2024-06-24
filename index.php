@@ -39,7 +39,7 @@ if (empty($_SESSION['username']) && empty($_SESSION['nama'])) {
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <span class="mr-2 d-none d-lg-inline text-gray-600 small"> <?php echo $_SESSION['nama']; ?> </span>
+                        <span class="mr-2 d-none d-lg-inline text-gray-600 small"> <?php echo $_SESSION['username']; ?> </span>
                         <i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="login.php">Logout</a></li>
@@ -80,7 +80,7 @@ if (empty($_SESSION['username']) && empty($_SESSION['nama'])) {
                     <div class="container-fluid px-4">
                         <h1 class="mt-4">Dashboard</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Selamat datang, <?php echo $_SESSION['nama']; ?>!</li>
+                            <li class="breadcrumb-item active">Selamat datang, <?php echo $_SESSION['username']; ?>!</li>
                         </ol>
                         <div class="row">
                             <div class="col-xl-3 col-md-6">

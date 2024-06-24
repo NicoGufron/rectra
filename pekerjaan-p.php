@@ -34,7 +34,7 @@ session_start();
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?=$_SESSION['nama'] ?></span>
+                        <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?=$_SESSION['username'] ?></span>
                         <i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="login.php">Logout</a></li>
@@ -147,12 +147,16 @@ session_start();
                                     <div class="mb-3">
                                     <input type='hidden' name='id_akun' value=<?= $_SESSION['id'] ?>>
                                     <input type='hidden' name='id_job' id='id_job'>
-                                    <input type='hidden' name='email' value=<?= $_SESSION['email']?>>
+                                    <input type='hidden' name='username' id='username' value=<?= $_SESSION['username'] ?>>
                                     <input type='hidden' name='posisi' id='posisiInput'>
                                     <input type='hidden' name='perusahaan' id = 'perusahaanInput'>
                                     <label for="nama">Nama</label>
-                                    <input type="text" class="form-control" placeholder="Nama" id="nama" name="nama" value="<?= $_SESSION['nama']?>" required>
-                                    </div>
+                                    <input type="text" class="form-control" placeholder="Nama" id="nama" name="nama" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email">Email</label>
+                                    <input type='text' class="form-control" placeholder="Email" id="email" name='email' required>
+                                </div>
                                     <div class="row">
                                         <div class="col">
                                             <label for="pendidikan">Pendidikan</label>

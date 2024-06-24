@@ -33,7 +33,7 @@ session_start();
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $_SESSION['nama']?></span>
+                        <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $_SESSION['username']?></span>
                         <i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="login.php">Logout</a></li>
@@ -54,7 +54,7 @@ session_start();
                             <div class="sb-sidenav-menu-heading">Data</div>
                             <a class="nav-link" href="data-master.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
-                                Data Master
+                                Data Pelamar
                             </a>
                             <a class="nav-link" href="data-interview.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-folder"></i></div>
@@ -67,7 +67,7 @@ session_start();
                             <div class="sb-sidenav-menu-heading"></div>
                             <a class="nav-link" href="Laporan.php">
                                 <div class="sb-nav-link-icon"><i class="far fa-file-alt"></i></div>
-                                Laporan
+                                Hasil Interview
                             </a>
                     </div>
                 </div>
@@ -85,14 +85,14 @@ session_start();
                             <li class="breadcrumb-item active">Data Interview</li>
                         </ol>
                         <a href="tambah-laporan.php" class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm" data-bs-toggle="modal" data-bs-target="#myModal"><i
-                            class="fas fa-archive fa-sm text-white-50"></i> Tambah Laporan</a>
+                            class="fas fa-archive fa-sm text-white-50"></i> Tambah Interview Baru</a>
                             <div class="modal fade" id="myModal">
                             <div class="modal-dialog">
                                 <div class="modal-content">
 
                                 <!-- Modal Header -->
                                 <div class="modal-header">
-                                    <h4 class="modal-title">Tambah Laporan</h4>
+                                    <h4 class="modal-title">Tambah Interview</h4>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                 </div>
 
@@ -105,12 +105,12 @@ session_start();
                                                     <label for="nama">Nama</label>
                                                     <select class="form-control" name='nama'>
                                                     <?php 
-                                                        $sql = "SELECT DISTINCT id_akun, nama_pelamar from `data-master`";
+                                                        $sql = "SELECT id_pelamar, nama_pelamar from pelamar GROUP BY id_akun";
                                                         $q = mysqli_query($koneksi, $sql);
                                                     
                                                         while ($row = mysqli_fetch_assoc($q)) {
                                                             $nama = $row['nama_pelamar'];
-                                                            $id = $row['id_akun'];
+                                                            $id = $row['id_pelamar'];
                                                             echo "<option value='$id|$nama'>$nama</option>";
                                                         }
                                                     ?>
@@ -121,7 +121,7 @@ session_start();
                                                     <label for="posisi">Posisi</label>
                                                     <select class="form-control" name='posisi'>
                                                     <?php 
-                                                        $sql = "SELECT posisi, perusahaan from `data-master`";
+                                                        $sql = "SELECT posisi, perusahaan from job";
                                                         $q = mysqli_query($koneksi, $sql);
                                                         while($row = mysqli_fetch_assoc($q)) {
                                                             $posisi = $row['posisi'];
@@ -136,16 +136,28 @@ session_start();
                                             </div>
                                             <div class="mb-3 mt-3">
                                             <label for="tlp">Tanggal Interview</label>
-                                            <input type="date" class="form-control" id="tgl" name="tgl-interview">
+                                            <input type="date" class="form-control" id="tgl" name="tgl-interview" required>
                                             </div>
                                             <div class="mb-3 mt-3">
-                                            <label for="pic">PIC</label>
-                                            <input type="text" class="form-control" id="pic" placeholder="PIC" name="pic">
+                                            <label for="pic">Nama Interviewer</label>
+                                            <input type="text" class="form-control" id="pic" placeholder="Nama Interviewer" name="pic" required>
+                                            </div>
+                                            <div class="mb-3 mt-3">
+                                            <label for="pic">Email Interviewer</label>
+                                            <input type="email" class="form-control" id="pic" placeholder="Email Interviewer" name="emailpic" required>
                                             </div>
                                             <div class="mb-3 mt-3">
                                             <label for="catatan">Catatan Kandidat</label>
                                             <textarea class="form-control" rows="5" id="catatan" name="catatan"></textarea>
                                             </div>
+                                            <!-- <div class="mb-3 mt-3">
+                                            <label for="status">Status Kandidat</label>
+                                            <select class="form-control" name="status">
+                                                <option value="Not Yet">Not Yet</option>
+                                                <option value="In Review">In Review</option>
+                                                <option value="Completed">Completed</option>
+                                            </select> -->
+                                            <!-- </div> -->
                                         </div>
                                     </div>
                                     
@@ -168,42 +180,46 @@ session_start();
                             <table class="table table-striped table-hover">
                                     <thead>
                                         <tr>
-                                        <th style="padding: .9rem .5rem" scope="col">PIC</th>
-                                        <th style="padding: .9rem .5rem" scope="col">Nama</th>
-                                        <th style="padding: .9rem .5rem" scope="col">Posisi</th>
-                                        <th style="padding: .9rem .5rem" scope="col">Perusahaan</th>
-                                        <th style="padding: .9rem .5rem" scope="col">Tanggal Interview</th>
-                                        <th style="padding: .9rem .5rem" scope="col">Catatan Kandidat</th>
-                                        <th style="padding: .9rem .5rem" scope="col">Aksi</th>
+                                        <th style="font-size:14px; padding: .9rem .5rem" scope="col">PIC</th>
+                                        <th style="font-size:14px; padding: .9rem .5rem" scope="col">Email Interviewer</th>
+                                        <th style="font-size:14px; padding: .9rem .5rem" scope="col">Nama Pelamar</th>
+                                        <th style="font-size:14px; padding: .9rem .5rem" scope="col">Posisi</th>
+                                        <th style="font-size:14px; padding: .9rem .5rem" scope="col">Perusahaan</th>
+                                        <th style="font-size:14px; padding: .9rem .5rem" scope="col">Tanggal Interview</th>
+                                        <th style="font-size:14px; padding: .9rem .5rem" scope="col">Catatan Kandidat</th>
+                                        <th style="font-size:14px; padding: .9rem .5rem" scope="col">Status Kandidat</th>
+                                        <th style="font-size:14px; padding: .9rem .5rem" scope="col">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php 
-                                            $sql = "SELECT * FROM `data-interview`";
+                                            $sql = "SELECT * FROM interview WHERE status = 'Not Yet' OR status = 'In Review'";
 
                                             $q = mysqli_query($koneksi, $sql);
 
                                             while ($row = mysqli_fetch_assoc($q)) {
-                                                $id = $row['Id'];
-                                                $idAkun = $row['id_akun'];
-                                                $namaInterview = $row['nama_interview'];
+                                                $id = $row['id_interview'];
+                                                $idPelamar = $row['id_pelamar'];
+                                                $namaInterviewer = $row['nama_interviewer'];
+                                                $emailInterviewer = $row['email_interviewer'];
                                                 $namaPelamar = $row['nama_pelamar'];
                                                 $posisi = $row['posisi'];
                                                 $tglInterview = $row['tgl_interview'];
                                                 $catatan = $row['catatan'];
-                                                $perusahaan = $row['perusahaan'];
-
+                                                $status = $row['status'];
                                                 $tglInterview = date("d M Y", strtotime($tglInterview));
 
                                                 echo "<tr>
-                                                    <td>$namaInterview</td>
-                                                    <td>$namaPelamar</td>
-                                                    <td>$posisi</td>
-                                                    <td>$perusahaan</td>
-                                                    <td>$tglInterview</td>
-                                                    <td>$catatan</td>
-                                                    <td>
-                                                        <a href='#' data-bs-target='#editModal' data-bs-toggle='modal' data-bs-id='$id' data-bs-idAkun='$idAkun' data-bs-pic='$namaInterview' data-bs-nama='$namaPelamar' data-bs-posisi='$posisi' data-bs-catatan='$catatan'><button type='button' class='fas fa-edit' href=''>Edit</button>
+                                                    <td style='font-size: 14px'>$namaInterviewer</td>
+                                                    <td style='font-size: 14px'>$emailInterviewer</td>
+                                                    <td style='font-size: 14px'>$namaPelamar</td>
+                                                    <td style='font-size: 14px'>$posisi</td>
+                                                    <td style='font-size: 14px'>$perusahaan</td>
+                                                    <td style='font-size: 14px'>$tglInterview</td>
+                                                    <td style='font-size: 14px'>$catatan</td>
+                                                    <td style='font-size: 14px'>$status</td>
+                                                    <td style='font-size: 14px'>
+                                                        <a href='#' data-bs-target='#editModal' data-bs-toggle='modal' data-bs-id='$id' data-bs-idPelamar='$idPelamar' data-bs-pic='$namaInterviewer' data-bs-nama='$namaPelamar' data-bs-posisi='$posisi' data-bs-catatan='$catatan'><button type='button' class='fas fa-edit' href=''>Edit</button>
                                                         <a href='action_page.php?id=$id&del=1&from=di'><button type='button' class='fas fa-trash' href=''>Edit</button></a>
                                                     </td>        
                                                 </tr>";
@@ -239,7 +255,7 @@ session_start();
                 <div class="container mt-3">
                     <form method='post' action="action_page.php">
                         <input type='hidden' id='idData' name='id'>
-                        <input type='hidden' id='idAkun' name='idAkun'>
+                        <input type='hidden' id='idPelamar' name='idPelamar'>
                         <div class="row">
                                 <div class="col">
                                     <label for="nama">Nama</label>
@@ -255,14 +271,24 @@ session_start();
                             <input type="date" class="form-control" id="tgl" name="tgl-interview" required>
                             </div>
                             <div class="mb-3 mt-3">
-                            <label for="pic">PIC</label>
-                            <input type="text" class="form-control" id="picEdit" placeholder="PIC" name="pic">
+                            <label for="pic">Nama Interviewer</label>
+                            <input type="text" class="form-control" id="pic" placeholder="Nama Interviewer" name="pic" required>
+                            </div>
+                            <div class="mb-3 mt-3">
+                            <label for="pic">Email Interviewer</label>
+                            <input type="email" class="form-control" id="pic" placeholder="Email Interviewer" name="emailpic" required>
                             </div>
                             <div class="mb-3 mt-3">
                             <label for="catatan">Catatan Kandidat</label>
                             <textarea class="form-control" rows="5" id="catatanEdit" name="catatan"></textarea>
                             </div>
                             <div class="mb-3 mt-3">
+                            <label for="status">Status Kandidat</label>
+                            <select class="form-control" name="status">
+                                <option value="Not Yet">Not Yet</option>
+                                <option value="In Review">In Review</option>
+                                <option value="Completed">Completed</option>
+                            </select>
                             </div>
                         </div>
                     </div>
@@ -288,7 +314,7 @@ session_start();
                     var pic = document.getElementById('picEdit');
                     var catatan = document.getElementById('catatanEdit');
                     var status = document.getElementById('statusEdit');
-                    var idAkun = document.getElementById('idAkun');
+                    var idPelamar = document.getElementById('idPelamar');
 
                     const idValue = event.relatedTarget.getAttribute('data-bs-id');
                     const namaValue = event.relatedTarget.getAttribute('data-bs-nama');
@@ -296,7 +322,7 @@ session_start();
                     const picValue = event.relatedTarget.getAttribute('data-bs-pic');
                     const catatanValue = event.relatedTarget.getAttribute('data-bs-catatan');
                     const statusValue = event.relatedTarget.getAttribute('data-bs-status');
-                    const idAkunValue = event.relatedTarget.getAttribute('data-bs-idAkun');
+                    const idPelamarValue = event.relatedTarget.getAttribute('data-bs-idPelamar');
 
                     id.value = idValue;
                     nama.value = namaValue;
@@ -304,7 +330,7 @@ session_start();
                     pic.value = picValue;
                     catatan.value = catatanValue;
                     status.value = statusValue;
-                    idAkun.value = idAkunValue;
+                    idPelamar.value = idPelamarValue;
 
                 });
             }

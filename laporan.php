@@ -41,7 +41,7 @@ if (empty($_SESSION['username']) && empty($_SESSION['nama'])) {
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <span class="mr-2 d-none d-lg-inline text-gray-600 small"> <?php echo $_SESSION['nama']; ?> </span>
+                        <span class="mr-2 d-none d-lg-inline text-gray-600 small"> <?php echo $_SESSION['username']; ?> </span>
                         <i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="login.php">Logout</a></li>
@@ -62,7 +62,7 @@ if (empty($_SESSION['username']) && empty($_SESSION['nama'])) {
                             <div class="sb-sidenav-menu-heading">Data</div>
                             <a class="nav-link" href="data-master.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
-                                Data Master
+                                Data Pelamar
                             </a>
                             <a class="nav-link" href="data-interview.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-folder"></i></div>
@@ -75,7 +75,7 @@ if (empty($_SESSION['username']) && empty($_SESSION['nama'])) {
                             <div class="sb-sidenav-menu-heading"></div>
                             <a class="nav-link" href="laporan.php">
                                 <div class="sb-nav-link-icon"><i class="far fa-file-alt"></i></div>
-                                Laporan
+                                Hasil Interview
                             </a>
                 </div>
             </div>
@@ -88,13 +88,13 @@ if (empty($_SESSION['username']) && empty($_SESSION['nama'])) {
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Laporan</h1>
+                        <h1 class="mt-4">Hasil Interview</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Data Laporan</li>
+                            <li class="breadcrumb-item active">Data Hasil Interview</li>
                         </ol>
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <!-- Button Tambah Laporan -->
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm" data-bs-toggle="modal" data-bs-target="#myModal"><i class="fas fa-archive fa-sm text-white-50"></i> Tambah Laporan</a>
+                        <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm" data-bs-toggle="modal" data-bs-target="#myModal"><i class="fas fa-archive fa-sm text-white-50"></i> Tambah Laporan</a> -->
                         <div class="modal fade" id="myModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -129,7 +129,7 @@ if (empty($_SESSION['username']) && empty($_SESSION['nama'])) {
                                                 <select class='form-control' name='nama'>
                                                         <!-- <input type="text" class="form-control" placeholder="Nama" id="nama" name="nama"> -->
                                                         <?php
-                                                        $sql = "SELECT DISTINCT nama_pelamar from `data-interview`";
+                                                        $sql = "SELECT DISTINCT nama_pelamar from interview";
                                                         $q = mysqli_query($koneksi, $sql);
 
                                                         while ($row = mysqli_fetch_assoc($q)) {
@@ -169,7 +169,7 @@ if (empty($_SESSION['username']) && empty($_SESSION['nama'])) {
                                         <select class='form-control' name="nama_interview">
 
                                             <?php 
-                                                $sql = "SELECT * FROM `data-interview`";
+                                                $sql = "SELECT * FROM interview";
                                                 
                                                 $q = mysqli_query($koneksi, $sql);
                                                 while($row = mysqli_fetch_assoc($q)) {
@@ -209,41 +209,55 @@ if (empty($_SESSION['username']) && empty($_SESSION['nama'])) {
                                 <i class="fas fa-table me-1"></i>
                                 Data Laporan
                             </div>
+                            <div class='card-body'>
+                            <table id='example' class='table table-striped' style='width:100%' class='table table-striped table-hover'>
+                            <tr>
+                                <th style='font-size: 14px; padding: .9rem .5rem' scope='col'>Nama Interviewer</th>
+                                <th style='font-size: 14px; padding: .9rem .5rem' scope='col'>Email Interviewer</th>
+                                <th style='font-size: 14px; padding: .9rem .5rem' scope='col'>Nama Pelamar</th>
+                                <th style='font-size: 14px; padding: .9rem .5rem' scope='col'>Posisi</th>
+                                <th style='font-size: 14px; padding: .9rem .5rem' scope='col'>Tanggal Interview</th>
+                                <th style='font-size: 14px; padding: .9rem .5rem' scope='col'>Perusahaan</th>
+                                <th style='font-size: 14px; padding: .9rem .5rem' scope='col'>Posisi</th>
+                                <th style='font-size: 14px; padding: .9rem .5rem' scope='col'>Usia</th>
+                                <th style='font-size: 14px; padding: .9rem .5rem' scope='col'>Pendidikan</th>
+                                <th style='font-size: 14px; padding: .9rem .5rem' scope='col'>Catatan</th>
+                                <th style='font-size: 14px; padding: .9rem .5rem' scope='col'>Status Kandidat</th>
+                            </tr>
 
                             <!-- PHP Untuk Table -->
                             <?php
-                            $query = "SELECT * FROM laporan";
+                            $query = "SELECT ine.nama_interviewer, ine.email_interviewer, pe.nama_pelamar, pe.posisi, ine.tgl_interview, pe.perusahaan, pe.posisi, pe.usia, pe.pendidikan, pe.usia, ine.catatan, ine.status FROM interview as ine JOIN pelamar as pe WHERE pe.id_pelamar = ine.id_pelamar AND ine.status = 'Completed';";
                             $result = mysqli_query($koneksi, $query);
                             if (!$result) {
                                 echo "Query Gagal! ";
-                            } else {
-                                echo
-                            "<div class='card-body'>
-                            <table id='example' class='table table-striped' style='width:100%' class='table table-striped table-hover'>
-                                        <tr>
-                                            <th style='padding: .9rem .5rem' scope='col'>Perusahaan</th>
-                                            <th style='padding: .9rem .5rem' scope='col'>Nama</th>
-                                            <th style='padding: .9rem .5rem' scope='col'>Posisi</th>
-                                            <th style='padding: .9rem .5rem' scope='col'>Alamat</th>
-                                            <th style='padding: .9rem .5rem' scope='col'>Pendidikan</th>
-                                            <th style='padding: .9rem .5rem' scope='col'>Usia</th>
-                                            <th style='padding: .9rem .5rem' scope='col'>Nomor Telepon</th>
-                                            <th style='padding: .9rem .5rem' scope='col'>PIC</th>
-                                            <th style='padding: .9rem .5rem' scope='col'>Catatan Kandidat</th>
-                                            <th style='padding: .9rem .5rem' scope='col'>Status</th>
-                                        </tr>";    
+                            } else {    
                             while ($row = mysqli_fetch_assoc($result)) {
+                                $namaInterviewer = $row['nama_interviewer'];
+                                $emailInterviewer = $row['email_interviewer'];
+                                $namaPelamar = $row['nama_pelamar'];
+                                $posisi =$row['posisi'];
+                                $tglInterview = $row['tgl_interview'];
+                                $perusahaan =$row['perusahaan'];
+                                $posisi = $row['posisi'];
+                                $usia = $row['usia'];
+                                $pendidikan = $row['pendidikan'];
+                                $status = $row['status'];
+                                $catatan = $row['catatan'];
+                                $tglInterview = date("d M Y", strtotime($tglInterview));
+
                                 echo    "<tr>
-                                            <td>" . $row['perusahaan'] . "</td>
-                                            <td>" . $row['nama_pelamar'] . "</td>
-                                            <td>" . $row['posisi'] . "</td>
-                                            <td>" . $row['alamat'] . "</td>
-                                            <td>" . $row['pendidikan'] . "</td>
-                                            <td>" . $row['usia'] . "</td>
-                                            <td>" . $row['nomor_telepon'] . "</td>
-                                            <td>" . $row['pic'] . "</td>
-                                            <td>" . $row['catatan'] . "</td>
-                                            <td>" . $row['status'] . "</td>
+                                            <td style='font-size:14px;'>$namaInterviewer</td>
+                                            <td style='font-size:14px;'>$emailInterviewer</td>
+                                            <td style='font-size:14px;'>$namaPelamar</td>
+                                            <td style='font-size:14px;'>$posisi</td>
+                                            <td style='font-size:14px;'>$tglInterview</td>
+                                            <td style='font-size:14px;'>$perusahaan</td>
+                                            <td style='font-size:14px;'>$posisi</td>
+                                            <td style='font-size:14px;'>$usia</td>
+                                            <td style='font-size:14px;'>$pendidikan</td>
+                                            <td style='font-size:14px;'>$catatan</td>
+                                            <td style='font-size:14px;'>$status</td>
                                         </tr>";
                             }
                                 echo "</table>";

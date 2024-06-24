@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = isset($_POST['password']) ? $_POST['password'] : '';
 
     // Persiapkan pernyataan SQL dengan prepared statement
-    $query = "SELECT Id, username, nama, nik, hak_akses, email FROM akun WHERE username=? AND password=?";
+    $query = "SELECT id, username, hak_akses FROM akun WHERE username=? AND password=?";
     $stmt = mysqli_prepare($koneksi, $query);
 
     // Bind parameter ke pernyataan SQL
@@ -25,11 +25,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (mysqli_num_rows($result) == 1) {
         // Ambil data pengguna
         $row = mysqli_fetch_assoc($result);
-        $_SESSION['id'] = $row['Id'];
+        $_SESSION['id'] = $row['id'];
         $_SESSION['username'] = $row['username'];
-        $_SESSION['nama'] = $row['nama'];
-        $_SESSION['nik'] = $row['nik'];
-        $_SESSION['email'] = $row['email'];
         $_SESSION['hak_akses'] = $row['hak_akses'];
 
         // Periksa hak akses pengguna

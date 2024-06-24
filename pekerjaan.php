@@ -55,7 +55,7 @@ include "koneksi.php";
                             <div class="sb-sidenav-menu-heading">Data</div>
                             <a class="nav-link" href="data-master.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
-                                Data Master
+                                Data Pelamar
                             </a>
                             <a class="nav-link" href="data-interview.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-folder"></i></div>
@@ -68,7 +68,7 @@ include "koneksi.php";
                             <div class="sb-sidenav-menu-heading"></div>
                             <a class="nav-link" href="laporan.php">
                                 <div class="sb-nav-link-icon"><i class="far fa-file-alt"></i></div>
-                                Laporan
+                                Hasil Interview
                             </a>
                             </div>
                     </div>
@@ -81,21 +81,21 @@ include "koneksi.php";
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Laporan</h1>
+                        <h1 class="mt-4">Pekerjaan</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Data Laporan</li>
+                            <li class="breadcrumb-item active">Menambah, mengubah atau menghapus pekerjaan.</li>
                         </ol>
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <!-- Button Tambah Laporan -->
                         <a href="tambah-laporan.php" class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm" data-bs-toggle="modal" data-bs-target="#myModal"><i
-                            class="fas fa-archive fa-sm text-white-50"></i> Tambah Job</a>
+                            class="fas fa-archive fa-sm text-white-50"></i> Tambah Pekerjaan Baru</a>
                             <div class="modal fade" id="myModal">
                             <div class="modal-dialog">
                                 <div class="modal-content">
 
                                 <!-- Modal Header -->
                                 <div class="modal-header">
-                                    <h4 class="modal-title">Tambah Job</h4>
+                                    <h4 class="modal-title">Tambah Pekerjaan Baru</h4>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                 </div>
 

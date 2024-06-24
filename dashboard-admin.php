@@ -8,20 +8,20 @@ if (empty($_SESSION['username']) && empty($_SESSION['nama'])) {
     exit();
 }
 
-$sqlDataMaster = "SELECT id FROM `data-master`";
-$sqlDataInterview = "SELECT id FROM `data-interview`";
+$sqlDataMaster = "SELECT id_pelamar FROM pelamar";
+$sqlDataInterview = "SELECT id_interview FROM interview";
 $sqlDataPekerjaan = "SELECT id FROM job";
-$sqlDataLaporan = "SELECT id FROM laporan";
+// $sqlDataLaporan = "SELECT id FROM laporan";
 
 $qDm = mysqli_query($koneksi, $sqlDataMaster);
 $qDi = mysqli_query($koneksi, $sqlDataInterview);
 $qP  = mysqli_query($koneksi, $sqlDataPekerjaan);
-$qL  = mysqli_query($koneksi, $sqlDataLaporan);
+// $qL  = mysqli_query($koneksi, $sqlDataLaporan);
 
 $totalDm = mysqli_num_rows($qDm);
 $totalDi = mysqli_num_rows($qDi);
 $totalP  = mysqli_num_rows($qP);
-$totalL  = mysqli_num_rows($qL);
+// $totalL  = mysqli_num_rows($qL);
 
 ?>
 
@@ -56,7 +56,7 @@ $totalL  = mysqli_num_rows($qL);
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $_SESSION['nama']; ?></span>
+                        <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $_SESSION['username'] ?></span>
                         <i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="logout.php">Logout</a></li>
@@ -77,7 +77,7 @@ $totalL  = mysqli_num_rows($qL);
                             <div class="sb-sidenav-menu-heading">Data</div>
                             <a class="nav-link" href="data-master.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
-                                Data Master
+                                Data Pelamar
                             </a>
                             <a class="nav-link" href="data-interview.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-folder"></i></div>
@@ -90,7 +90,7 @@ $totalL  = mysqli_num_rows($qL);
                             <div class="sb-sidenav-menu-heading"></div>
                             <a class="nav-link" href="laporan.php">
                                 <div class="sb-nav-link-icon"><i class="far fa-file-alt"></i></div>
-                                Laporan
+                                Hasil Interview
                             </a>
                             </div>
                         </div>
@@ -105,12 +105,12 @@ $totalL  = mysqli_num_rows($qL);
                     <div class="container-fluid px-4">
                         <h1 class="mt-4">Dashboard</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Selamat datang, <?php echo $_SESSION['nama']; ?>!</li>
+                            <li class="breadcrumb-item active">Selamat datang, <?php echo $_SESSION['username']; ?>!</li>
                         </ol>
                         <div class="row">
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-primary text-white mb-4">
-                                    <div class="card-body">Data Master
+                                    <div class="card-body">Data Pelamar
                                         <div class="mb-0 font-weight-bold text-gray-800"><?= $totalDm ?></div>
                                     </div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
@@ -141,7 +141,7 @@ $totalL  = mysqli_num_rows($qL);
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-md-6">
+                            <!-- <div class="col-xl-3 col-md-6">
                                 <div class="card bg-danger text-white mb-4">
                                     <div class="card-body">Laporan
                                         <div class="mb-0 font-weight-bold text-gray-800"><?= $totalL?></div>
@@ -151,7 +151,7 @@ $totalL  = mysqli_num_rows($qL);
                                         <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </main>
