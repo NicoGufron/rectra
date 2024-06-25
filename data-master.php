@@ -259,8 +259,8 @@ session_start();
                                                     <a class='text-primary'>$berkas</a>
                                                 </td>
                                                 <td>
-                                                    <a href='#'><button type='button' class='fas fa-edit' data-bs-toggle='modal' data-bs-target='#editModal' data-bs-id='$id' data-bs-nama='$namaPelamar' data-bs-posisi='$posisi' data-bs-perusahaan='$perusahaan' data-bs-pendidikan='$pendidikan' data-bs-email='$emailPelamar' data-bs-usia='$usia' data-bs-nomortelpon='$nomorTelpon' data-bs-alamat='$alamat'>Edit</button></a>
-                                                    <a href='action_page.php?id=$id&del=1&from=dm'><button type='button' class='fas fa-trash'>Delete</button></a>
+                                                    <a href='#'><button type='button' class='fas fa-edit' data-bs-toggle='modal' data-bs-target='#editModal' data-bs-id='$idPelamar' data-bs-nama='$namaPelamar' data-bs-posisi='$posisi' data-bs-perusahaan='$perusahaan' data-bs-pendidikan='$pendidikan' data-bs-email='$emailPelamar' data-bs-usia='$usia' data-bs-nomortelpon='$nomorTelpon' data-bs-alamat='$alamat'>Edit</button></a>
+                                                    <a href='action_page.php?id=$idPelamar&del=1&from=dm'><button type='button' class='fas fa-trash'>Delete</button></a>
                                                 </td>
                                             </tr>";
                                     };
@@ -372,10 +372,10 @@ session_start();
                                 <label for="berkas">Berkas</label>
                                 <input type="file" class="form-control" id="berkas" placeholder="pdf" name="berkas">
                             </div>
-                            <div class="mb-3 mt-3">
+                            <!-- <div class="mb-3 mt-3">
                                 <label for="status">Status</label>
                                 <input type="text" class="form-control" placeholder="Status" id="emailEdit" name="status">
-                            </div>
+                            </div> -->
                     </div>
                 </div>
 

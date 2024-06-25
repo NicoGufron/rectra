@@ -189,13 +189,13 @@ if (isset($_POST['submit-edit-master'])) {
 
         if (move_uploaded_file($fileTmpPath, $dest_path)) {
             $berkas = $newFileName;
-            $sql = "UPDATE pelamar SET id_job = '$id_job', id_akun = '$id_akun', nama_pelamar = '$nama', posisi = '$posisi', perusahaan = '$perusahaan', alamat = '$alamat', tgl_lahir = '$tglLahir', pendidikan = '$pendidikan', usia = '$usia', nomor_telepon='$nomorTelepon', email_pelamar = '$email', berkas = '$berkas', status='$status' WHERE id = '$id'";
-            // var_dump($sql);
+            $sql = "UPDATE pelamar SET id_job = '$id_job', id_akun = '$id_akun', nama_pelamar = '$nama', posisi = '$posisi', perusahaan = '$perusahaan', alamat = '$alamat', tgl_lahir = '$tglLahir', pendidikan = '$pendidikan', usia = '$usia', nomor_telepon='$nomorTelepon', email_pelamar = '$email', berkas = '$berkas' WHERE id_pelamar = '$id'";
+            var_dump($sql);
             $q = mysqli_query($koneksi, $sql);
             header('location: data-master.php');
         }
     } else {
-        $sql = "UPDATE pelamar SET id_job = '$id_job', id_akun = '$id_akun', nama_pelamar = '$nama', posisi = '$posisi', perusahaan = '$perusahaan', alamat = '$alamat', tgl_lahir = '$tglLahir', pendidikan = '$pendidikan', usia = '$usia', nomor_telepon='$nomorTelepon', email_pelamar = '$email', status='$status' WHERE id = '$id'";
+        $sql = "UPDATE pelamar SET id_job = '$id_job', id_akun = '$id_akun', nama_pelamar = '$nama', posisi = '$posisi', perusahaan = '$perusahaan', alamat = '$alamat', tgl_lahir = '$tglLahir', pendidikan = '$pendidikan', usia = '$usia', nomor_telepon='$nomorTelepon', email_pelamar = '$email' WHERE id_pelamar = '$id'";
         var_dump($sql);
         $q = mysqli_query($koneksi, $sql);
         header('location: data-master.php');

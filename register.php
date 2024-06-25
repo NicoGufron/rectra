@@ -3,19 +3,21 @@ require_once("koneksi.php");
 $result = "";
 
 if (isset($_POST["create-account"])) {
-    $firstName = $_POST['firstname'];
-    $lastName = $_POST['lastname'];
-    $name = $firstName .' '. $lastName;
+    // $firstName = $_POST['firstname'];
+    // $lastName = $_POST['lastname'];
+    // $name = $firstName .' '. $lastName;
     $username = $_POST['username'];
-    $email = $_POST["email"];
-    $nik = $_POST["nik"];
+    // $email = $_POST["email"];
+    // $nik = $_POST["nik"];
     $password = $_POST["password"];
     $confirmPassword = $_POST["confirmpassword"];
 
     if ($password === $confirmPassword) {
-        $sql = "INSERT INTO akun (id, username, password, nama, nik, email, hak_akses) VALUES (0, '$username', '$password', '$name', '$nik', '$email', 'Pelamar')";
+        // $sql = "INSERT INTO akun (id, username, password, nama, nik, email, hak_akses) VALUES (0, '$username', '$password', '$name', '$nik', '$email', 'Pelamar')";
+        $sql = "INSERT INTO akun (id, username, password, hak_akses) VALUES (0, '$username', '$password', 'Pelamar')";
         mysqli_query($koneksi, $sql);
-        $result = "<div class='alert alert-success' role='alert'><strong>Anda berhasil mendaftar!</strong></div>";
+        $result = "<div class='alert alert-success' role='alert'><strong>Anda berhasil mendaftar! Mengarahkan kembali ke halaman masuk...</strong></div>";
+        header("Refresh: 3, url = login.php");
     } else {
         $result = "<div class='alert alert-danger' role='alert'><strong>Maaf, password tidak sama! Mohon coba lagi!</strong></div>";
     }
@@ -48,7 +50,7 @@ if (isset($_POST["create-account"])) {
                                 </div>
                                     <div class="card-body">
                                         <form method="post">
-                                            <div class="row mb-3">
+                                            <!-- <div class="row mb-3">
                                                 <div class="col-md-6">
                                                     <div class="form-floating mb-3 mb-md-0">
                                                         <input class="form-control" id="inputFirstName" type="text" placeholder="Enter your first name" name='firstname' required/>
@@ -61,19 +63,19 @@ if (isset($_POST["create-account"])) {
                                                         <label for="inputLastName">Last name</label>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             <div class="form-floating mb-3">
                                                 <input class="form-control" id="inputUsername" type="text" placeholder="Username" name='username' required />
                                                 <label for="inputUsername">Username</label>
                                             </div>
-                                            <div class="form-floating mb-3">
+                                            <!-- <div class="form-floating mb-3">
                                                 <input class="form-control" id="inputEmail" type="email" placeholder="name@example.com" name="email" required />
                                                 <label for="inputEmail">Email address</label>
                                             </div>
                                             <div class="form-floating mb-3">
                                                 <input class="form-control" id="inputNIK" type="number" placeholder="Nomor NIK" name='nik' required />
                                                 <label for="inputNIK">NIK</label>
-                                            </div>
+                                            </div> -->
                                             <div class="row mb-3">
                                                 <div class="col-md-6">
                                                     <div class="form-floating mb-3 mb-md-0">
@@ -89,7 +91,7 @@ if (isset($_POST["create-account"])) {
                                                 </div>
                                             </div>
                                             <div class="mt-4 mb-0">
-                                                <div class="d-grid"><button type="submit" class="btn btn-primary btn-block" name='create-account'>Create Account</button></div>
+                                                <div class="d-grid"><button type="submit" class="btn btn-primary btn-block" name='create-account'>Buat Akun</button></div>
                                             </div>
                                         </form>
                                     </div>
