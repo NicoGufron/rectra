@@ -150,14 +150,14 @@ session_start();
                                             <label for="catatan">Catatan Kandidat</label>
                                             <textarea class="form-control" rows="5" id="catatan" name="catatan"></textarea>
                                             </div>
-                                            <!-- <div class="mb-3 mt-3">
+                                            <div class="mb-3 mt-3">
                                             <label for="status">Status Kandidat</label>
                                             <select class="form-control" name="status">
-                                                <option value="Not Yet">Not Yet</option>
+                                                <option value="Pending">Pending</option>
                                                 <option value="In Review">In Review</option>
                                                 <option value="Completed">Completed</option>
-                                            </select> -->
-                                            <!-- </div> -->
+                                            </select>
+                                            </div>
                                         </div>
                                     </div>
                                     
@@ -193,7 +193,7 @@ session_start();
                                     </thead>
                                     <tbody>
                                         <?php 
-                                            $sql = "SELECT * FROM interview WHERE status = 'Not Yet' OR status = 'In Review'";
+                                            $sql = "SELECT * FROM interview WHERE status = 'Pending' OR status = 'In Review'";
 
                                             $q = mysqli_query($koneksi, $sql);
 
@@ -219,7 +219,7 @@ session_start();
                                                     <td style='font-size: 14px'>$catatan</td>
                                                     <td style='font-size: 14px'>$status</td>
                                                     <td style='font-size: 14px'>
-                                                        <a href='#' data-bs-target='#editModal' data-bs-toggle='modal' data-bs-id='$id' data-bs-idPelamar='$idPelamar' data-bs-pic='$namaInterviewer' data-bs-nama='$namaPelamar' data-bs-posisi='$posisi' data-bs-catatan='$catatan'><button type='button' class='fas fa-edit' href=''>Edit</button>
+                                                        <a href='#' data-bs-target='#editModal' data-bs-toggle='modal' data-bs-id='$id' data-bs-idPelamar='$idPelamar' data-bs-pic='$namaInterviewer' data-bs-picEmail='$emailInterviewer' data-bs-nama='$namaPelamar' data-bs-posisi='$posisi' data-bs-catatan='$catatan'><button type='button' class='fas fa-edit' href=''>Edit</button>
                                                         <a href='action_page.php?id=$id&del=1&from=di'><button type='button' class='fas fa-trash' href=''>Edit</button></a>
                                                     </td>        
                                                 </tr>";
@@ -272,11 +272,11 @@ session_start();
                             </div>
                             <div class="mb-3 mt-3">
                             <label for="pic">Nama Interviewer</label>
-                            <input type="text" class="form-control" id="pic" placeholder="Nama Interviewer" name="pic" required>
+                            <input type="text" class="form-control" id="picEdit" placeholder="Nama Interviewer" name="pic" required>
                             </div>
                             <div class="mb-3 mt-3">
                             <label for="pic">Email Interviewer</label>
-                            <input type="email" class="form-control" id="pic" placeholder="Email Interviewer" name="emailpic" required>
+                            <input type="email" class="form-control" id="picEmailEdit" placeholder="Email Interviewer" name="emailpic" required>
                             </div>
                             <div class="mb-3 mt-3">
                             <label for="catatan">Catatan Kandidat</label>
@@ -285,7 +285,7 @@ session_start();
                             <div class="mb-3 mt-3">
                             <label for="status">Status Kandidat</label>
                             <select class="form-control" name="status">
-                                <option value="Not Yet">Not Yet</option>
+                                <option value="Pending">Pending</option>
                                 <option value="In Review">In Review</option>
                                 <option value="Completed">Completed</option>
                             </select>
@@ -315,6 +315,7 @@ session_start();
                     var catatan = document.getElementById('catatanEdit');
                     var status = document.getElementById('statusEdit');
                     var idPelamar = document.getElementById('idPelamar');
+                    var emailPic = document.getElementById('picEmailEdit');
 
                     const idValue = event.relatedTarget.getAttribute('data-bs-id');
                     const namaValue = event.relatedTarget.getAttribute('data-bs-nama');
@@ -323,15 +324,16 @@ session_start();
                     const catatanValue = event.relatedTarget.getAttribute('data-bs-catatan');
                     const statusValue = event.relatedTarget.getAttribute('data-bs-status');
                     const idPelamarValue = event.relatedTarget.getAttribute('data-bs-idPelamar');
-
+                    const emailPicValue = event.relatedTarget.getAttribute('data-bs-picEmail');
+                    
                     id.value = idValue;
                     nama.value = namaValue;
                     posisi.value = posisiValue;
                     pic.value = picValue;
                     catatan.value = catatanValue;
-                    status.value = statusValue;
+                    // status.value = statusValue;
                     idPelamar.value = idPelamarValue;
-
+                    emailPic.value = emailPicValue;
                 });
             }
         </script>

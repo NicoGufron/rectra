@@ -66,18 +66,19 @@ if (isset($_POST['submit-add-interview'])) {
     $nama = $_POST['nama'];
     $pic = $_POST['pic'];
     $emailPic = $_POST['emailpic'];
-$catatan = $_POST['catatan'];
+    $catatan = $_POST['catatan'];
     $posisi = $_POST['posisi'];
     $tglInterview = $_POST['tgl-interview'];
+    $status = $_POST['status'];
 
     list($id_pelamar, $nama) = explode("|", $nama);
     list($posisi, $perusahaan) = explode("|", $posisi);
 
     $tglInterview = date("Y-m-d", strtotime($tglInterview));
     
-    $sql = "INSERT INTO interview (id_interview, id_pelamar, nama_interviewer, email_interviewer, nama_pelamar, posisi, perusahaan, tgl_interview, catatan, status) VALUES (NULL, '$id_pelamar', '$pic','$emailPic', '$nama', '$posisi', '$perusahaan', '$tglInterview', '$catatan', 'Not Yet')";
-    $q = mysqli_query($koneksi, $sql);
-    header("Location: data-interview.php");
+    $sql = "INSERT INTO interview (id_interview, id_pelamar, nama_interviewer, email_interviewer, nama_pelamar, posisi, perusahaan, tgl_interview, catatan, status) VALUES (NULL, '$id_pelamar', '$pic','$emailPic', '$nama', '$posisi', '$perusahaan', '$tglInterview', '$catatan', '$status')";
+    // $q = mysqli_query($koneksi, $sql);
+    // header("Location: data-interview.php");
 }
 
 if (isset($_POST['submit-add-master'])) {
@@ -149,6 +150,50 @@ if (isset($_POST['submit-add-laporan'])) {
 
     $q = mysqli_query($koneksi, $sql);
     header("Location: laporan.php");
+}
+
+if (isset($_POST["create-account-admin"])) {
+    // $firstName = $_POST['firstname'];
+    // $lastName = $_POST['lastname'];
+    // $name = $firstName .' '. $lastName;
+    $username = $_POST['username'];
+    // $email = $_POST["email"];
+    // $nik = $_POST["nik"];
+    $password = $_POST["password"];
+    $confirmPassword = $_POST["confirmpassword"];
+
+    if ($password === $confirmPassword) {
+        // $sql = "INSERT INTO akun (id, username, password, nama, nik, email, hak_akses) VALUES (0, '$username', '$password', '$name', '$nik', '$email', 'Pelamar')";
+        $sql = "INSERT INTO akun (id, username, password, hak_akses) VALUES (0, '$username', '$password', 'Admin')";
+        mysqli_query($koneksi, $sql);
+        $result = "<div class='alert alert-success' role='alert'><strong>Anda berhasil mendaftar! Mengarahkan kembali ke halaman masuk...</strong></div>";
+        header("location: login-admin.php");
+    } else {
+        $result = "<div class='alert alert-danger' role='alert'><strong>Maaf, password tidak sama! Mohon coba lagi!</strong></div>";
+    }
+
+}
+
+if (isset($_POST["create-account"])) {
+    // $firstName = $_POST['firstname'];
+    // $lastName = $_POST['lastname'];
+    // $name = $firstName .' '. $lastName;
+    $username = $_POST['username'];
+    // $email = $_POST["email"];
+    // $nik = $_POST["nik"];
+    $password = $_POST["password"];
+    $confirmPassword = $_POST["confirmpassword"];
+
+    if ($password === $confirmPassword) {
+        // $sql = "INSERT INTO akun (id, username, password, nama, nik, email, hak_akses) VALUES (0, '$username', '$password', '$name', '$nik', '$email', 'Pelamar')";
+        $sql = "INSERT INTO akun (id, username, password, hak_akses) VALUES (0, '$username', '$password', 'Pelamar')";
+        mysqli_query($koneksi, $sql);
+        $result = "<div class='alert alert-success' role='alert'><strong>Anda berhasil mendaftar! Mengarahkan kembali ke halaman masuk...</strong></div>";
+        header("location: login.php");
+    } else {
+        $result = "<div class='alert alert-danger' role='alert'><strong>Maaf, password tidak sama! Mohon coba lagi!</strong></div>";
+    }
+
 }
 
 

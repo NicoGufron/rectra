@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = isset($_POST['password']) ? $_POST['password'] : '';
 
     // Persiapkan pernyataan SQL dengan prepared statement
-    $query = "SELECT id, username, hak_akses FROM akun WHERE username=? AND password=? AND hak_akses = 'Pelamar'";
+    $query = "SELECT id, username, hak_akses FROM akun WHERE username=? AND password=? AND hak_akses = 'Admin'";
     $stmt = mysqli_prepare($koneksi, $query);
 
     // Bind parameter ke pernyataan SQL
@@ -30,9 +30,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['hak_akses'] = $row['hak_akses'];
 
         // Periksa hak akses pengguna
-        if ($row['hak_akses'] == "Pelamar") {
-            // Jika hak akses adalah 2, arahkan ke index_karyawan.php
-            header("Location: index.php");
+        if ($row['hak_akses'] == "Admin") {
+            // Jika hak akses adalah 1, arahkan ke index.php
+            header("Location: dashboard-admin.php");
         }
         exit(); // Pastikan untuk menghentikan eksekusi kode setelah melakukan redirect
     } else {
@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="row justify-content-center">
                             <div class="col-lg-5">
                                 <div class="card shadow-lg border-0 rounded-lg mt-5">
-                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">Login</h3></div>
+                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">Login Admin</h3></div>
                                     <div class="card-body">
                                         <form method="post">
                                             <div class="form-floating mb-3">
@@ -79,18 +79,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                 <input class="form-control" id="password" name="password" type="password" placeholder="Password" />
                                                 <label for="password">Password</label>
                                             </div>
-                                            <div class="form-check mb-3">
+                                            <!-- <div class="form-check mb-3">
                                                 <input class="form-check-input" id="inputRememberPassword" type="checkbox" value="" />
                                                 <label class="form-check-label" for="inputRememberPassword">Remember Password</label>
                                             </div>
                                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
                                                 <a class="small" href="password.php">Lupa password?</a>
                                                 <button type="submit" class="btn btn-primary">Login</button>
-                                            </div>
+                                            </div> -->
                                         </form>
                                     </div>
                                     <div class="card-footer text-center py-3">
-                                        <div class="small">Belum mempunyai akun? <a href='register.php'>Daftar disini!</a></div>
+                                        <div class="small">Belum mempunyai akun? <a href='register-admin.php'>Daftar disini!</a></div>
                                     </div>
                                 </div>
                             </div>

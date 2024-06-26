@@ -69,7 +69,7 @@ $result = "";
                                                 </div>
                                             </div>
                                             <div class="mt-4 mb-0">
-                                                <div class="d-grid"><button type="submit" class="btn btn-primary btn-block" name='create-account'>Buat Akun</button></div>
+                                                <div class="d-grid"><button type="submit" class="btn btn-primary btn-block" name='create-account-admin'>Buat Akun</button></div>
                                             </div>
                                         </form>
                                     </div>
