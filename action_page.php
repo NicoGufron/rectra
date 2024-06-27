@@ -77,8 +77,8 @@ if (isset($_POST['submit-add-interview'])) {
     $tglInterview = date("Y-m-d", strtotime($tglInterview));
     
     $sql = "INSERT INTO interview (id_interview, id_pelamar, nama_interviewer, email_interviewer, nama_pelamar, posisi, perusahaan, tgl_interview, catatan, status) VALUES (NULL, '$id_pelamar', '$pic','$emailPic', '$nama', '$posisi', '$perusahaan', '$tglInterview', '$catatan', '$status')";
-    // $q = mysqli_query($koneksi, $sql);
-    // header("Location: data-interview.php");
+    $q = mysqli_query($koneksi, $sql);
+    header("Location: data-interview.php");
 }
 
 if (isset($_POST['submit-add-master'])) {
