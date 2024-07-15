@@ -13,6 +13,7 @@ session_start();
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>Rectra Talent Indonesia</title>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -164,18 +165,25 @@ session_start();
                                         </div>
                                         <div class="col">
                                             <label for="usia">Usia</label>
-                                            <input type="text" class="form-control" placeholder="Usia" id="usia" name="usia" required>
+                                            <input type="number" class="form-control" placeholder="Usia" id="usia" name="usia" pattern="^(2[0-9]|[3-9][0-9]|[1-9][0-9]{2,})$" title="Harus berumur 20 tahun keatas" required>
                                         </div>
                                     </div>
                                     <div class="mb-3 mt-3">
                                     <label for="tlp">Nomor Telepon</label>
-                                    <input type="text" class="form-control" id="tlp" placeholder="Nomor Telepon (WA)" name="tlp" required>
+                                    <input type="number" class="form-control" id="tlp" placeholder="Nomor Telepon (WA)" name="tlp" required>
                                     <div class="mb-3 mt-3">
                                     <label for="tgl_lahir">Tanggal Lahir</label>
                                     <input type="date" class="form-control" id="tgl_lahir" placeholder="" name="tgl_lahir" required>
                                     <div class="mb-3 mt-3">
-                                    <label for="berkas" accept=".pdf">Berkas</label>
-                                    <input type="file" class="form-control" id="berkas" placeholder="Berkas" name="berkas" required>
+                                        <div class="berkas-biasa">
+                                            <label for="berkas" accept=".pdf">Berkas</label>
+                                            <input type="file" class="form-control" id="berkas" placeholder="Berkas" name="berkas" required>
+                                        </div>
+                                        <div class="berkas-ijazah">
+                                            <label for="berkas" accept=".pdf">Berkas Ijazah</label>
+                                            <input type="file" class="form-control" id="berkas" placeholder="Berkas" name="berkas" required>
+
+                                        </div>
                                     <div class="mb-3 mt-3">
                                     <label for="alamat">Alamat</label>
                                     <textarea type="text" class="form-control" placeholder="Alamat Terakhir" cols="3" rows="4" id="alamat" name="alamat"></textarea>
@@ -210,6 +218,28 @@ session_start();
                     idJob.value = event.relatedTarget.getAttribute('data-bs-id');
                     posisiInput.value = event.relatedTarget.getAttribute('data-bs-position');
                     perusahaanInput.value = event.relatedTarget.getAttribute('data-bs-perusahaan');
+                    
+
+                    $(document).ready(function() {
+                        $(".berkas-ijazah").hide();
+                        $("#usia").on("input", function() {
+                            if ($(this).val() < 18) {
+                                console.log("wow");
+                            } else {
+                                console.log("wiw");
+                            }
+                        });
+
+                        $("#pendidikan").on("input", function() {
+                            if ($(this).val() === "S1" || $(this).val() === "S2" || $(this).val() === "S3") {
+                                $(".berkas-biasa").hide();
+                                $(".berkas-ijazah").show();
+                            } else {
+                                $(".berkas-biasa").show();
+                                $(".berkas-ijazah").hide();
+                            }
+                        });
+                    });
                 })
             }
         </script>
