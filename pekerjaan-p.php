@@ -18,6 +18,32 @@ session_start();
         <link href="css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     </head>
+    <style>
+        .warning {
+            margin-top: 2px;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 5px;
+            background-color: #d54444;
+            color: white;
+            border-radius: 5px;
+        }
+
+        .warning-header {
+            width: 50%;
+            margin-top: 2px;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 1rem;
+            background-color: #d54444;
+            color: white;
+            border-radius: 5px;
+        }
+        
+        .warning-header p {
+            margin-bottom: 0;
+        }
+    </style>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
@@ -80,7 +106,7 @@ session_start();
                         </ol>
                         <?php 
                             if(isset($_GET['message'])) {
-                                echo "<p><strong>".$_GET['message']."</strong></p>";
+                                echo "<div class='warning-header'><p><strong>".$_GET['message']."</strong></p></div>";
                             }
                         ?>
 
@@ -166,6 +192,7 @@ session_start();
                                         <div class="col">
                                             <label for="usia">Usia</label>
                                             <input type="number" class="form-control" placeholder="Usia" id="usia" name="usia" pattern="^(2[0-9]|[3-9][0-9]|[1-9][0-9]{2,})$" title="Harus berumur 20 tahun keatas" required>
+                                            <span class="warning">Usia harus diatas dari 20</span>
                                         </div>
                                     </div>
                                     <div class="mb-3 mt-3">
@@ -177,11 +204,11 @@ session_start();
                                     <div class="mb-3 mt-3">
                                         <div class="berkas-biasa">
                                             <label for="berkas" accept=".pdf">Berkas</label>
-                                            <input type="file" class="form-control" id="berkas" placeholder="Berkas" name="berkas" required>
+                                            <input type="file" class="form-control" id="berkas" placeholder="Berkas" name="berkas">
                                         </div>
                                         <div class="berkas-ijazah">
                                             <label for="berkas" accept=".pdf">Berkas Ijazah</label>
-                                            <input type="file" class="form-control" id="berkas" placeholder="Berkas" name="berkas" required>
+                                            <input type="file" class="form-control" id="berkas" placeholder="Berkas" name="berkas_ijazah">
 
                                         </div>
                                     <div class="mb-3 mt-3">
@@ -223,10 +250,12 @@ session_start();
                     $(document).ready(function() {
                         $(".berkas-ijazah").hide();
                         $("#usia").on("input", function() {
-                            if ($(this).val() < 18) {
-                                console.log("wow");
+                            if ($(this).val() > 20) {
+                                console.log("diatas 20");
+                                $(".warning").hide();
                             } else {
-                                console.log("wiw");
+                                console.log("dibawah 20");
+                                $(".warning").show();
                             }
                         });
 

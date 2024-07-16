@@ -15,51 +15,76 @@ if (isset($_POST['submit-add-job'])) {
 }
 
 if (isset($_POST['submit-apply-job'])) {
-    $uploadsDirectory = __DIR__ . "/berkas/";
-    $nama = $_POST['nama'];
-    $pendidikan = $_POST['pendidikan'];
-    $usia = $_POST['usia'];
-    $tlp = $_POST['tlp'];
-    $posisi = $_POST['posisi'];
-    $perusahaan = $_POST['perusahaan'];
-    $email = $_POST['email'];
-    $berkas = $_POST['berkas'];
-    $alamat = $_POST['alamat'];
-    $tglLahir = $_POST['tgl_lahir'];
-    $idJob = $_POST['id_job'];
-    $idAkun = $_POST['id_akun'];
-    $username = $_POST['username'];
+    if ($_POST['usia'] >= 20) {
 
-    if (!is_dir($uploadsDirectory)) {
-        mkdir($uploadsDirectory, 0777, true);
-    }
+        $uploadsDirectory = __DIR__ . "/berkas/";
+        $nama = $_POST['nama'];
+        $pendidikan = $_POST['pendidikan'];
+        $usia = $_POST['usia'];
+        $tlp = $_POST['tlp'];
+        $posisi = $_POST['posisi'];
+        $perusahaan = $_POST['perusahaan'];
+        $email = $_POST['email'];
+        $berkas = $_POST['berkas'];
+        $berkasIjazah = $_POST['berkas'];
+        $alamat = $_POST['alamat'];
+        $tglLahir = $_POST['tgl_lahir'];
+        $idJob = $_POST['id_job'];
+        $idAkun = $_POST['id_akun'];
+        $username = $_POST['username'];
 
-    if (isset($_FILES['berkas']) && $_FILES['berkas']['error'] === UPLOAD_ERR_OK) {
-        $fileTmpPath = $_FILES['berkas']['tmp_name'];
-        $fileName = $_FILES['berkas']['name'];
-        $fileNameCmps = explode(".", $fileName);
-        $fileExtension = strtolower(end($fileNameCmps));
+        if ($_FILES['berkas']['name'] === "") {
+            var_dump($_FILES['berkas_ijazah']['name'], $usia, $tlp);
+        }
 
-        $removeSpaces = preg_replace('/\s+/', "_", strtolower($nama));
-        $newFileName = $removeSpaces . '.' . $fileExtension;
-        $dest_path = $uploadsDirectory . $newFileName;
+        if (!is_dir($uploadsDirectory)) {
+            mkdir($uploadsDirectory, 0777, true);
+        }
 
-        if (move_uploaded_file($fileTmpPath, $dest_path)) {
-            $berkas = $newFileName;
-            $sql = "INSERT INTO pelamar (id_pelamar, username, id_akun, nama_pelamar, email_pelamar, tgl_lahir, alamat, pendidikan, nomor_telepon, usia, id_job, posisi, perusahaan, berkas) VALUES (0, '$username', '$idAkun', '$nama', '$email', '$tglLahir', '$alamat', '$pendidikan', '$tlp', '$usia', '$idJob', '$posisi', '$perusahaan', '$berkas')";
-            $q = mysqli_query($koneksi, $sql);
-            if ($q) {
-                header("Location: pekerjaan-p.php");
+        if ((isset($_FILES['berkas']) && $_FILES['berkas']['error'] === UPLOAD_ERR_OK) || ((isset($_FILES['berkas_ijazah']) && $_FILES['berkas_ijazah']['error'] === UPLOAD_ERR_OK))) {
+
+            // berkas biasa
+            $fileTmpPath = $_FILES['berkas']['tmp_name'];
+            $fileName = $_FILES['berkas']['name'];
+
+            // berkas ijazah
+            $fileIjazahTmpPath = $_FILES['berkas_ijazah']['tmp_name'];
+            $fileIjazahName = $_FILES['berkas_ijazah']['name'];
+
+            if ($fileName !== "") {
+                var_dump("masuk biasa");
+                $fileNameCmps = explode(".", $fileName);
+                $fileExtension = strtolower(end($fileNameCmps));
+                $filePath = $fileTmpPath;
+            } else if ($fileIjazahName !== "") {
+                $fileNameCmps = explode(".", $fileIjazahName);
+                $fileExtension = strtolower(end($fileNameCmps));
+                $filePath = $fileIjazahTmpPath;
+            }
+
+            $removeSpaces = preg_replace('/\s+/', "_", strtolower($nama));
+            $newFileName = $removeSpaces . '_' . $pendidikan . '.' . $fileExtension;
+            $dest_path = $uploadsDirectory . $newFileName;
+
+            if (move_uploaded_file($filePath, $dest_path)) {
+                $berkas = $newFileName;
+                $sql = "INSERT INTO pelamar (id_pelamar, username, id_akun, nama_pelamar, email_pelamar, tgl_lahir, alamat, pendidikan, nomor_telepon, usia, id_job, posisi, perusahaan, berkas) VALUES (0, '$username', '$idAkun', '$nama', '$email', '$tglLahir', '$alamat', '$pendidikan', '$tlp', '$usia', '$idJob', '$posisi', '$perusahaan', '$berkas')";
+                $q = mysqli_query($koneksi, $sql);
+                if ($q) {
+                    header("Location: pekerjaan-p.php");
+                } else {
+                    $message = urlencode("Ada kesalahan! Mohon coba lagi!");
+                    header("Location: pekerjaan-p.php?message=".$message);
+                }
             } else {
                 $message = urlencode("Ada kesalahan! Mohon coba lagi!");
                 header("Location: pekerjaan-p.php?message=".$message);
             }
-        } else {
-            $message= urlencode("Ada kesalahan! Mohon coba lagi!");
-            header("Location: pekerjaan-p.php?message=".$message);
         }
+    } else {
+        $message = urlencode("Gagal melamar pekerjaan! Umur harus diatas 20!");
+        header("Location: pekerjaan-p.php?message=".$message);
     }
-
 }
 
 if (isset($_POST['submit-add-interview'])) {
@@ -75,7 +100,7 @@ if (isset($_POST['submit-add-interview'])) {
     list($posisi, $perusahaan) = explode("|", $posisi);
 
     $tglInterview = date("Y-m-d", strtotime($tglInterview));
-    
+
     $sql = "INSERT INTO interview (id_interview, id_pelamar, nama_interviewer, email_interviewer, nama_pelamar, posisi, perusahaan, tgl_interview, catatan, status) VALUES (NULL, '$id_pelamar', '$pic','$emailPic', '$nama', '$posisi', '$perusahaan', '$tglInterview', '$catatan', '$status')";
     $q = mysqli_query($koneksi, $sql);
     header("Location: data-interview.php");
@@ -122,7 +147,6 @@ if (isset($_POST['submit-add-master'])) {
             header('location: data-master.php');
         }
     } else {
-        
     }
 
     header('location: data-master.php');
@@ -138,7 +162,7 @@ if (isset($_POST['submit-add-laporan'])) {
     $usia = $_POST['usia'];
     $nomorTelepon = $_POST['tlp'];
     $status = 'Not Yet';
-    $catatan = $_POST['catatan'];   
+    $catatan = $_POST['catatan'];
     $pic = $_POST['nama_interview'];
 
     list($id_interview, $pic) = explode("|", $pic);
@@ -171,7 +195,6 @@ if (isset($_POST["create-account-admin"])) {
     } else {
         $result = "<div class='alert alert-danger' role='alert'><strong>Maaf, password tidak sama! Mohon coba lagi!</strong></div>";
     }
-
 }
 
 if (isset($_POST["create-account"])) {
@@ -193,7 +216,6 @@ if (isset($_POST["create-account"])) {
     } else {
         $result = "<div class='alert alert-danger' role='alert'><strong>Maaf, password tidak sama! Mohon coba lagi!</strong></div>";
     }
-
 }
 
 
@@ -306,7 +328,7 @@ if ($_GET['id'] != "" && $_GET['del'] === '1' && $_GET['from'] === "pk") {
 if (isset($_POST['perusahaan'])) {
     $namaPerusahaan = $_POST['perusahaan'];
     $sql = "SELECT DISTINCT id, posisi FROM job WHERE perusahaan = '$namaPerusahaan'";
-    
+
     $q = mysqli_query($koneksi, $sql);
 
     if (mysqli_num_rows(($q)) > 0) {
@@ -331,4 +353,3 @@ if (isset($_POST['perusahaanLaporan'])) {
         }
     }
 }
-?>
